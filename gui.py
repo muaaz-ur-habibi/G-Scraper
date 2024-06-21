@@ -15,6 +15,7 @@ def hide_all_widgets():
     e_t_s_elem.hide()
     e_t_s_attrs.hide()
     e_t_s_attrs_values.hide()
+    e_t_s_for_site.hide()
     e_t_s_add_button.hide()
     e_t_s_list.hide()
 
@@ -73,11 +74,15 @@ def display_set_elements_to_scrape():
     e_t_s_elem.show()
     e_t_s_attrs.show()
     e_t_s_attrs_values.show()
+    e_t_s_for_site.show()
     e_t_s_add_button.show()
     e_t_s_list.show()
 
 def display_final_button():
     hide_all_widgets()
+
+    show_site_list.addItems(site_list)
+    show_elems_list.addItems(elements_list)
     
     ask.show()
     show_site_list_l.show()
@@ -87,7 +92,7 @@ def display_final_button():
     yes_button.show()
     no_button.show()
 #----------------------------------------------------------------------
-# functions that actually add/remove data in the app
+# functions that handle the data in the app
 
 # generic function that adds data to the lists. currently no function to remove
 def add_to_list(which_list):
@@ -102,10 +107,13 @@ def add_to_list(which_list):
 
         # append to the main list
         s_a_p_list.addItem(f"{site_list[-1]['url']}      {site_list[-1]['request type']}")
-        # append to other required lists, like the payload one
+        
+        # append to other required lists
         w_r_p_site.addItem(f'{site_list[-1]['url']}')
+        e_t_s_for_site.addItem(f'{site_list[-1]['url']}')
 
     elif which_list == 'element':
+        for_site_e = e_t_s_for_site.currentText()
         element_name = e_t_s_elem.text().lower()
         element_attribute = e_t_s_attrs.text().lower()
         element_attributes_values = e_t_s_attrs_values.text()
@@ -113,21 +121,24 @@ def add_to_list(which_list):
         elem_data = {
             'name': element_name,
             'attribute': element_attribute,
-            'attribute value': element_attributes_values
+            'attribute value': element_attributes_values,
+            'for site': for_site_e
         }
-
+        
+        # append to main list
         elements_list.append(elem_data)
 
-        e_t_s_list.addItem(f"{elements_list[-1]['name']}    {elements_list[-1]['attribute']}    {elements_list[-1]['attribute value']}")
+        # append to other required lists
+        e_t_s_list.addItem(f"{elements_list[-1]['name']}    {elements_list[-1]['attribute']}    {elements_list[-1]['attribute value']}    {elements_list[-1]['for site']}")
 
     elif which_list == 'payload':
-        for_site = w_r_p_site.currentText()
+        for_site_p = w_r_p_site.currentText()
         payload_type = w_r_p_select.currentText().lower()
         parameter = w_r_p_add_param.text()
         parameter_value = w_r_p_add_param_value.text()
 
         payl_data = {
-            'for site': for_site,
+            'for site': for_site_p,
             'type': payload_type,
             'param': parameter,
             'param value': parameter_value
@@ -135,6 +146,9 @@ def add_to_list(which_list):
 
         payloads_list.append(payl_data)
 
+
+def start_scrape():
+    pass
 
 site_list = []
 elements_list = []
@@ -186,8 +200,6 @@ final_send_button.move(10, 220)
 final_send_button.setText("Start Scraping")
 final_send_button.clicked.connect(lambda: display_final_button())
 
-
-#display_frame.setLayout()
 
 #---------------------------------------------------
 # set site adding control panel widgets
@@ -255,13 +267,19 @@ e_t_s_add_button.move(400, 59)
 e_t_s_add_button.setText('+')
 e_t_s_add_button.clicked.connect(lambda: add_to_list('element'))
 
+e_t_s_for_site = QComboBox(display_frame)
+e_t_s_for_site.move(10, 89)
+e_t_s_for_site.setFixedSize(300, 20)
+e_t_s_for_site.addItem('Select site this element belongs to')
+
 e_t_s_list = QListWidget(display_frame)
-e_t_s_list.setGeometry(10, 85, 380, 360)
+e_t_s_list.setGeometry(10, 115, 380, 360)
 
 e_t_s_label.hide()
 e_t_s_elem.hide()
 e_t_s_attrs.hide()
 e_t_s_attrs_values.hide()
+e_t_s_for_site.hide()
 e_t_s_add_button.hide()
 e_t_s_list.hide()
 
@@ -321,7 +339,7 @@ w_r_p_add_param_value.hide()
 w_r_p_add_button.hide()
 
 #---------------------------------------------------
-# wigets to confirm to start scrape after showing the scrape data
+# wigdets to confirm to start scrape after showing the scrape data
 
 ask = QLabel(display_frame)
 ask.move(10, 30)
@@ -416,6 +434,8 @@ percentage_of_data_scraped.hide()
 error_message.hide()
 progress_bar.hide()
 
+
+# show the root widget
 root.show()
 
 if __name__ == "__main__":
