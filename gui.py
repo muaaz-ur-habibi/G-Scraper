@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+from scrapingfunctions import run
+
 
 # functions that show/hide certain widgets based on menu option user pressed
 def hide_all_widgets():
@@ -81,8 +83,14 @@ def display_set_elements_to_scrape():
 def display_final_button():
     hide_all_widgets()
 
-    show_site_list.addItems(site_list)
-    show_elems_list.addItems(elements_list)
+    show_site_list.clear()
+    show_elems_list.clear()
+
+    to_show_sites = [i['url'] for i in site_list]
+    to_show_elems = [f"{i['name']}\n{i['for site']}" for i in elements_list]
+
+    show_site_list.addItems(to_show_sites)
+    show_elems_list.addItems(to_show_elems)
     
     ask.show()
     show_site_list_l.show()
@@ -91,7 +99,7 @@ def display_final_button():
     show_elems_list.show()
     yes_button.show()
     no_button.show()
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------------------------------
 # functions that handle the data in the app
 
 # generic function that adds data to the lists. currently no function to remove
@@ -99,35 +107,42 @@ def add_to_list(which_list):
     if which_list == 'url':
         url = s_a_p.text()
         req_type = s_a_p_req_type.currentText()
-        url_data = {
-            'url': url,
-            'request type': req_type
-        }
-        site_list.append(url_data)
+        if req_type == 'METHOD':
+            alert.setText('Error')
+            alert.setInformativeText('No request type was specified for the URL. Please select a request type.')
+            alert.exec_()
+        else:
+            s_a_p.clear()
+            url_data = {
+                'url': url,
+                'request type': req_type
+            }
+            site_list.append(url_data)
 
-        # append to the main list
-        s_a_p_list.addItem(f"{site_list[-1]['url']}      {site_list[-1]['request type']}")
-        
-        # append to other required lists
-        w_r_p_site.addItem(f'{site_list[-1]['url']}')
-        e_t_s_for_site.addItem(f'{site_list[-1]['url']}')
+            # append to the main list   
+            s_a_p_list.addItem(f"{site_list[-1]['url']}      {site_list[-1]['request type']}")
+            
+            # append to other required lists
+            w_r_p_site.addItem(f'{site_list[-1]['url']}')
+            e_t_s_for_site.addItem(f'{site_list[-1]['url']}')
 
     elif which_list == 'element':
         for_site_e = e_t_s_for_site.currentText()
         element_name = e_t_s_elem.text().lower()
         element_attribute = e_t_s_attrs.text().lower()
         element_attributes_values = e_t_s_attrs_values.text()
+        e_t_s_elem.clear()
 
         elem_data = {
-            'name': element_name,
-            'attribute': element_attribute,
-            'attribute value': element_attributes_values,
-            'for site': for_site_e
+                'name': element_name,
+                'attribute': element_attribute,
+                'attribute value': element_attributes_values,
+                'for site': for_site_e
         }
-        
+            
         # append to main list
         elements_list.append(elem_data)
-
+    
         # append to other required lists
         e_t_s_list.addItem(f"{elements_list[-1]['name']}    {elements_list[-1]['attribute']}    {elements_list[-1]['attribute value']}    {elements_list[-1]['for site']}")
 
@@ -136,6 +151,8 @@ def add_to_list(which_list):
         payload_type = w_r_p_select.currentText().lower()
         parameter = w_r_p_add_param.text()
         parameter_value = w_r_p_add_param_value.text()
+        w_r_p_add_param.clear()
+        w_r_p_add_param_value.clear()
 
         payl_data = {
             'for site': for_site_p,
@@ -147,8 +164,27 @@ def add_to_list(which_list):
         payloads_list.append(payl_data)
 
 
+# get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
+def get_elem_error_response(i):
+    if i.text() == '&Yes':
+        run(url_list=site_list, element_list=elements_list, nullify_elem_error=True)
+    elif i.text() == '&No':
+        display_set_elements_to_scrape()
+
 def start_scrape():
-    pass
+    print('scrape started')
+    r = run(url_list=site_list, element_list=elements_list)
+    if r == 'show nan_url error':
+        alert.setText('Error')
+        alert.setInformativeText('No URLs were provided. Please enter atleast 1 URL to scrape')
+        alert.exec_()
+    elif r == 'show nan_elems error':
+        alert.setText('Error')
+        alert.setInformativeText('No elements were provided. This will mean the program will scrape the entire content of the page. Do you want to proceed?')
+        alert.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        proceed_with_no_elems = alert.buttonClicked.connect(get_elem_error_response)
+        alert.exec_()
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 site_list = []
 elements_list = []
@@ -298,7 +334,7 @@ w_r_p_site_label.move(10, 60)
 w_r_p_site = QComboBox(display_frame)
 w_r_p_site.addItem('Select Site')
 w_r_p_site.move(60, 58)
-w_r_p_site.setFixedHeight(20)
+w_r_p_site.setFixedSize(300, 20)
 w_r_p_site.setFont(QFont("Segoe UI", 8))
 
 w_r_p_select_label = QLabel(display_frame)
@@ -366,11 +402,15 @@ yes_button = QPushButton(display_frame)
 yes_button.setFixedSize(140, 30)
 yes_button.setText('Yes')
 yes_button.move(60, 390)
+yes_button.setStyleSheet('background: lightgreen;')
+yes_button.clicked.connect(start_scrape)
 
 no_button = QPushButton(display_frame)
 no_button.setFixedSize(140, 30)
 no_button.setText('No, modify')
 no_button.move(220, 390)
+no_button.setStyleSheet('background: pink')
+no_button.clicked.connect(lambda: display_set_site_controls())
 
 ask.hide()
 show_site_list_l.hide()
@@ -433,6 +473,10 @@ current_url_status_code.hide()
 percentage_of_data_scraped.hide()
 error_message.hide()
 progress_bar.hide()
+
+#-----------------------------------------------------
+# universal alert box
+alert = QMessageBox()
 
 
 # show the root widget
