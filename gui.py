@@ -6,6 +6,8 @@ from scrapingfunctions import run
 
 
 # functions that show/hide certain widgets based on menu option user pressed
+
+# hide all widgets
 def hide_all_widgets():
     s_a_p_label.hide()
     s_a_p.hide()
@@ -107,10 +109,15 @@ def add_to_list(which_list):
     if which_list == 'url':
         url = s_a_p.text()
         req_type = s_a_p_req_type.currentText()
+        # ask user to select a method
         if req_type == 'METHOD':
             alert.setText('Error')
             alert.setInformativeText('No request type was specified for the URL. Please select a request type.')
             alert.exec_()
+        elif url == '':
+            alert_url.setText('Error')
+            alert_url.setInformativeText('No URL was provided. Please enter a URL')
+            alert_url.exec_()
         else:
             s_a_p.clear()
             url_data = {
@@ -127,64 +134,103 @@ def add_to_list(which_list):
             e_t_s_for_site.addItem(f'{site_list[-1]['url']}')
 
     elif which_list == 'element':
+        # get the element values
         for_site_e = e_t_s_for_site.currentText()
         element_name = e_t_s_elem.text().lower()
         element_attribute = e_t_s_attrs.text().lower()
         element_attributes_values = e_t_s_attrs_values.text()
-        e_t_s_elem.clear()
 
-        elem_data = {
-                'name': element_name,
-                'attribute': element_attribute,
-                'attribute value': element_attributes_values,
-                'for site': for_site_e
-        }
+        # ask user to select the site this element belongs to
+        if for_site_e == 'Select site this element belongs to':
+            alert.setText('Error')
+            alert.setInformativeText('Please select a site this element belongs to')
+            alert.exec_()
+        else:
+            e_t_s_elem.clear()
+            e_t_s_attrs.clear()
+            e_t_s_attrs_values.clear()
+
+            elem_data = {
+                    'name': element_name,
+                    'attribute': element_attribute,
+                    'attribute value': element_attributes_values,
+                    'for site': for_site_e
+            }
             
-        # append to main list
-        elements_list.append(elem_data)
-    
-        # append to other required lists
-        e_t_s_list.addItem(f"{elements_list[-1]['name']}    {elements_list[-1]['attribute']}    {elements_list[-1]['attribute value']}    {elements_list[-1]['for site']}")
+            # append to main list
+            elements_list.append(elem_data)
+        
+            # append to other required lists
+            e_t_s_list.addItem(f"{elements_list[-1]['name']}    {elements_list[-1]['attribute']}    {elements_list[-1]['attribute value']}    {elements_list[-1]['for site']}")
 
     elif which_list == 'payload':
+        # get the parameters values
         for_site_p = w_r_p_site.currentText()
         payload_type = w_r_p_select.currentText().lower()
         parameter = w_r_p_add_param.text()
         parameter_value = w_r_p_add_param_value.text()
-        w_r_p_add_param.clear()
-        w_r_p_add_param_value.clear()
+        
+        # ask user to select a site to add the parameter to if they did not
+        if for_site_p == 'Select Site':
+            alert.setText('Error')
+            alert.setInformativeText('Please select a site to send this payload along with')
+            alert.exec_()
+        else:
+            w_r_p_add_param.clear()
+            w_r_p_add_param_value.clear()
 
-        payl_data = {
-            'for site': for_site_p,
-            'type': payload_type,
-            'param': parameter,
-            'param value': parameter_value
-        }
+            payl_data = {
+                'for site': for_site_p,
+                'type': payload_type,
+                'param': parameter,
+                'param value': parameter_value
+            }
 
-        payloads_list.append(payl_data)
+            payloads_list.append(payl_data)
 
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
 def get_elem_error_response(i):
+    print('elem error function')
     if i.text() == '&Yes':
-        run(url_list=site_list, element_list=elements_list, nullify_elem_error=True)
+        r = run(url_list=site_list, element_list=elements_list, payload_list=payloads_list, nullify_elem_error=True)
+        # handling the case where a post request is trying to be sent without any payloads/web parameters. What are they trying to POST?
+        if r == 'show post_without_payload error':
+            alert_payload.setText('Error')
+            alert_payload.setInformativeText('A POST request is trying to be sent without any payloads. Please define a payload to be sent with the POST request')
+            alert_payload.exec_()
     elif i.text() == '&No':
         display_set_elements_to_scrape()
 
+
+# the function that actually starts the scraping
 def start_scrape():
-    print('scrape started')
-    r = run(url_list=site_list, element_list=elements_list)
+    print('start scrape function')
+    r = run(url_list=site_list, element_list=elements_list, payload_list=payloads_list)
+    # handle the case where no urls are added. what are they trying to scrape?
     if r == 'show nan_url error':
-        alert.setText('Error')
-        alert.setInformativeText('No URLs were provided. Please enter atleast 1 URL to scrape')
-        alert.exec_()
+        alert_url.setText('Error')
+        alert_url.setInformativeText('No URLs were provided. Please enter atleast 1 URL to scrape')
+        alert_url.exec_()
+    # handle the case where no elements are defined. ask the user if they wish to scrape the entire site since that is basically what will happen
     elif r == 'show nan_elems error':
-        alert.setText('Error')
-        alert.setInformativeText('No elements were provided. This will mean the program will scrape the entire content of the page. Do you want to proceed?')
-        alert.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        proceed_with_no_elems = alert.buttonClicked.connect(get_elem_error_response)
-        alert.exec_()
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        alert_elements.setText('Error')
+        alert_elements.setInformativeText('No elements were provided. This will mean the program will scrape the entire content of the page. Do you want to proceed?')
+        alert_elements.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        alert_elements.buttonClicked.connect(get_elem_error_response)
+        alert_elements.exec_()
+    # handle the case where the user forgot to define any parameters, including the 'no paraeters'
+    elif r == 'show nan_payls error':
+        alert_payload.setText('Error')
+        alert_payload.setInformativeText('No payloads were specified. If you wish to scrape without any web parameters, select the "No parameters" option for the site in payloads setting option')
+        alert_payload.exec_()
+    # handling the case where a post request is trying to be sent without any payloads/web parameters. What are they trying to POST?
+    if r == 'show post_without_payload error':
+        alert_payload.setText('Error')
+        alert_payload.setInformativeText('A POST request is trying to be sent without any payloads. Please define a payload to be sent with the POST request')
+        alert_payload.exec_()
+
+
 
 site_list = []
 elements_list = []
@@ -343,9 +389,9 @@ w_r_p_select_label.move(10, 90)
 w_r_p_select_label.setFont(QFont('Segoe UI', 9))
 
 w_r_p_select = QComboBox(display_frame)
-w_r_p_select.addItems(['Payload', 'Headers', 'Files', 'JSON'])
+w_r_p_select.addItems(['Payload', 'Headers', 'Files', 'JSON', 'No Parameter'])
 w_r_p_select.move(120, 88)
-w_r_p_select.setFixedSize(80, 20)
+w_r_p_select.setFixedHeight(20)
 w_r_p_select.setFont(QFont('Arial', 8))
 
 w_r_p_add_param = QLineEdit(display_frame)
@@ -478,9 +524,19 @@ progress_bar.hide()
 # universal alert box
 alert = QMessageBox()
 
+# alert for urls
+alert_url = QMessageBox()
+
+# alert for elements
+alert_elements = QMessageBox()
+
+# alert for payloads
+alert_payload = QMessageBox()
+
+
 
 # show the root widget
 root.show()
 
-if __name__ == "__main__":
-    app.exec()
+if __name__ == '__main__':
+    app.exec_()

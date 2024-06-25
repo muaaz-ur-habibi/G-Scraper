@@ -24,11 +24,8 @@ def run(url_list:list,
         pass
     print('scrape started')
 
-    print('cleaning params data')
     # cleaning and prettifying the payload data
-    grouped_data = {}
-
-    print(payload_list)
+    grouped_data_element_payload = {}
 
     # Process the list
     for entry in payload_list:
@@ -39,8 +36,8 @@ def run(url_list:list,
             param_value = entry['param value']
 
             # Initialize the site entry if it doesn't exist
-            if site not in grouped_data:
-                grouped_data[site] = {
+            if site not in grouped_data_element_payload:
+                grouped_data_element_payload[site] = {
                     'for site': site,
                     'headers': {},
                     'files': {},
@@ -50,19 +47,38 @@ def run(url_list:list,
                 }
 
             # Add the param and param value to the appropriate type
-            grouped_data[site][entry_type][param] = param_value
+            grouped_data_element_payload[site][entry_type][param] = param_value
         else:
-            if site not in grouped_data:
-                grouped_data[site] = {
+            if site not in grouped_data_element_payload:
+                grouped_data_element_payload[site] = {
                     'for site': site,
                     'no parameter': {},
                 }
 
             # Add the param and param value to the appropriate type
-            grouped_data[site][entry_type]['value'] = 'true'
+            grouped_data_element_payload[site][entry_type]['value'] = 'true'
 
     # Convert the grouped data into the desired format
-    url_param_list = list(grouped_data.values())
+    url_param_list = list(grouped_data_element_payload.values())
+
+
+    grouped_data_element = {}
+
+# Group the elements by 'for site'
+    for entry in element_list:
+        site = entry['for site']
+        element = {k: v for k, v in entry.items() if k != 'for site'}
+
+        if site not in grouped_data_element:
+            grouped_data_element[site] = []
+
+        grouped_data_element[site].append(element)
+
+    # Convert the dictionary to the desired list of dictionaries format
+    print(url_list)
+    element_with_url_list = [{'url': site, 'elements': elements} for site, elements in grouped_data_element.items()]
+
+    element_with_url_list = sorted(element_with_url_list, key=lambda x: [i['url'] for i in url_list].index(x['url']))
 
     
     for n in range(len(url_param_list)):
@@ -73,31 +89,46 @@ def run(url_list:list,
         print(url)
         print(req_type)
 
-        #if req_type == 'GET':
-        print('get request')
         if url_param_list[n]['for site'] == url:
-                if url_param_list[n]['no parameter'] == 'false':
+                print(url_param_list[n])
+                if url_param_list[n]['no parameter']['value'] == 'false':
+                    print('parameters are defined')
                     print('sending request with data')
-                    r = threading.Thread(target=request_executor, args=(url, url_param_list[n], req_type))
+                    element_with_url_list = element_with_url_list[n] if element_with_url_list != [] else []
+                    print(element_with_url_list)
+                    r = threading.Thread(target=request_executor, args=(url, url_param_list[n], element_with_url_list, req_type))
                     r.start()
+                elif url_param_list[n]['no parameter']['value'] == 'true':
+                    print('no parameters')
+                    if req_type == 'GET':
+                        print('sending get request without data')
+                        r = threading.Thread(target=request_executor, args=(url, url_param_list[n], element_with_url_list, req_type))
+                        r.start()
+                    elif req_type == 'POST':
+                        return error_handler('no payloads for post')
 
-                else:
-                    print('sending request without data')
-                    r = threading.Thread(target=request_executor, args=(url, url_param_list[n], req_type))
-                    r.start()
 
 
-
-def request_executor(url, params_list, req_type):
-    print(params_list)
+def request_executor(url, params_list, elems_list, req_type):
     if req_type == 'GET':
+        print('GET request')
         if params_list['no parameter']['value'] == 'false':
-            
-            req = requ.get(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
+            try:
+                req = requ.get(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
+                print(req.status_code)
+            except:
+                print('connection error')
+                error_handler('connection error')
         else:
-            req = requ.get(url=url)
-            print(req.text)
-    pass
+            try:
+                req = requ.get(url=url)
+                print(req.status_code)
+            except ConnectionError:
+                print('connection error')
+                error_handler('connection error')
+    elif req_type == 'POST':
+        print('POST request')
+        pass
 
 
 
@@ -111,8 +142,13 @@ def error_handler(type_of_error:str):
     elif type_of_error == 'no payloads':
         return 'show nan_payls error'
     
+    elif type_of_error == 'no payloads for post':
+        return 'show post_without_payload error'
+
+
 def status_returner():
     pass
 
-def logger():
+
+def logger(**kwargs:list):
     pass
