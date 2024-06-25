@@ -122,32 +122,55 @@ def request_executor(url, params_list, elems_list, req_type):
 
                 scraped_page = bs(req, features='html.parser').prettify()
 
+                curr_dir = os.getcwd()
+
                 # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
                 if elems_list == []:
-                    curr_dir = os.getcwd()
-                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[1]}.txt'
-                    
-                    with open(save_path, 'w') as f_w:
+                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
+                    print(save_path)
+                    with open(save_path, 'w', errors='ignore') as f_w:
                         f_w.write(scraped_page)
+
+                else:
+                    elems = elems_list['elements']
+                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
+
+                    with open(save_path, 'a') as f_a:
+                        for i in elems:
+                            element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                            for i in element_scraped:
+                                f_a.write(f'{i.text}\n')
                     
             except:
                 print('Error')
         else:
             try:
                 req = requ.get(url=url)
+                print(req.url)
                 req = req.content
 
-                scraped_page = bs(req, features='html.parser').prettify()
+                page_soup = bs(req, features='html.parser')
+                scraped_page = page_soup.prettify()
+
+                curr_dir = os.getcwd()
                 
                 # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
                 if elems_list == []:
-                    curr_dir = os.getcwd()
-                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{url}-web_page.txt'
-                    
-                    
+                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
+                    print(save_path)
+                    with open(save_path, 'w', errors='ignore') as f_w:
+                        f_w.write(scraped_page)
+                
                 else:
-                    pass
-                    
+                    elems = elems_list['elements']
+                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
+
+                    with open(save_path, 'a') as f_a:
+                        for i in elems:
+                            element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                            for i in element_scraped:
+                                f_a.write(f'{i.text}\n')
+
             except ConnectionError:
                 print('connection error')
 
