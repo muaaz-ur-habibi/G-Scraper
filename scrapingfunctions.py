@@ -179,7 +179,6 @@ def request_executor(url, params_list, elems_list, req_type):
         pass
 
 
-
 def error_handler(type_of_error:str):
     if type_of_error == 'no urls':
         return 'show nan_url error'
