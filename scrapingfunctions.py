@@ -1,9 +1,11 @@
 import requests as requ
 from bs4 import BeautifulSoup as bs
 
-import time
+import os
 
 import threading
+
+import datetime
 
 
 # the main function that will run the scrape
@@ -91,10 +93,10 @@ def run(url_list:list,
 
         if url_param_list[n]['for site'] == url:
                 print(url_param_list[n])
+                element_with_url_list = element_with_url_list[n] if element_with_url_list != [] else []
                 if url_param_list[n]['no parameter']['value'] == 'false':
                     print('parameters are defined')
                     print('sending request with data')
-                    element_with_url_list = element_with_url_list[n] if element_with_url_list != [] else []
                     print(element_with_url_list)
                     r = threading.Thread(target=request_executor, args=(url, url_param_list[n], element_with_url_list, req_type))
                     r.start()
@@ -114,18 +116,41 @@ def request_executor(url, params_list, elems_list, req_type):
         print('GET request')
         if params_list['no parameter']['value'] == 'false':
             try:
+                print('getting')
                 req = requ.get(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
-                print(req.status_code)
+                req = req.content
+
+                scraped_page = bs(req, features='html.parser').prettify()
+
+                # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
+                if elems_list == []:
+                    curr_dir = os.getcwd()
+                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[1]}.txt'
+                    
+                    with open(save_path, 'w') as f_w:
+                        f_w.write(scraped_page)
+                    
             except:
-                print('connection error')
-                error_handler('connection error')
+                print('Error')
         else:
             try:
                 req = requ.get(url=url)
-                print(req.status_code)
+                req = req.content
+
+                scraped_page = bs(req, features='html.parser').prettify()
+                
+                # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
+                if elems_list == []:
+                    curr_dir = os.getcwd()
+                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{url}-web_page.txt'
+                    
+                    
+                else:
+                    pass
+                    
             except ConnectionError:
                 print('connection error')
-                error_handler('connection error')
+
     elif req_type == 'POST':
         print('POST request')
         pass
