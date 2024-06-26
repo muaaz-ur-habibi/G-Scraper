@@ -163,7 +163,7 @@ def add_to_list(which_list):
             elements_list.append(elem_data)
         
             # append to other required lists
-            e_t_s_list.addItem(f"{elements_list[-1]['name']}    {elements_list[-1]['attribute']}    {elements_list[-1]['attribute value']}    {elements_list[-1]['for site']}")
+            e_t_s_list.addItem(f"{elements_list[-1]['name']}: {elements_list[-1]['attribute']} {elements_list[-1]['attribute value']} FOR {elements_list[-1]['for site']}")
 
     elif which_list == 'payload':
         # get the parameters values
@@ -189,6 +189,8 @@ def add_to_list(which_list):
             }
 
             payloads_list.append(payl_data)
+
+            w_r_p_list.addItem(f"{payloads_list[-1]['type']}: {payloads_list[-1]['param']} {payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
 
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
@@ -414,7 +416,8 @@ w_r_p_add_button.move(400, 119)
 w_r_p_add_button.clicked.connect(lambda: add_to_list('payload'))
 
 w_r_p_list = QListWidget(display_frame)
-w_r_p_list.setGeometry(10, 115, 380, 360)
+w_r_p_list.setGeometry(10, 155, 380, 300)
+w_r_p_list.hide()
 
 w_r_p_label.hide()
 w_r_p_site_label.hide()

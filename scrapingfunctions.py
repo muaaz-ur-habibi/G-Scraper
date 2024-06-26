@@ -119,19 +119,23 @@ def request_executor(url, params_list, elems_list, req_type):
                 code = req.status_code
                 req = req.content
 
-                scraped_page = bs(req, features='html.parser').prettify()
+            except:
+                print('error with request')
+                return 'error with request'
 
-                curr_dir = os.getcwd()
+            scraped_page = bs(req, features='html.parser').prettify()
 
-                # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
-                if elems_list == []:
+            curr_dir = os.getcwd()
+
+            # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
+            if elems_list == []:
                     save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
                     print(save_path)
                     with open(save_path, 'w', errors='ignore') as f_w:
                         f_w.write(scraped_page)
-                        webpage_logger(time=str(datetime.datetime.now(), url=url, status=code, parameters=params_list))
+                        webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list)
 
-                else:
+            else:
                     elems = elems_list['elements']
                     save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
 
@@ -140,10 +144,9 @@ def request_executor(url, params_list, elems_list, req_type):
                             element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
                             for i in element_scraped:
                                 f_a.write(f'{i.text}\n')
-                                element_logger(time=str(datetime.datetime.now(), url=url, element=i['name'], status=code, parameters=params_list))
+                                element_logger(time=str(datetime.datetime.now()), url=url, element=f"{i['name']} {i['attribute']}", status=code, parameters=params_list)
 
-            except:
-                return 'error with request'
+            
         else:
             try:
                 req = requ.get(url=url)
@@ -161,7 +164,7 @@ def request_executor(url, params_list, elems_list, req_type):
                     print(save_path)
                     with open(save_path, 'w', errors='ignore') as f_w:
                         f_w.write(scraped_page)
-                        webpage_logger(time=str(datetime.datetime.now(), url=url, status=code, parameters=params_list))
+                        webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list)
                 
                 else:
                     elems = elems_list['elements']
@@ -172,7 +175,7 @@ def request_executor(url, params_list, elems_list, req_type):
                             element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
                             for i in element_scraped:
                                 f_a.write(f'{i.text}\n')
-                                element_logger(time=str(datetime.datetime.now(), url=url, element=i['name'], status=code, parameters=params_list))
+                                element_logger(time=str(datetime.datetime.now()), url=url, element=i['name'], status=code, parameters=params_list)
                                 
 
             except ConnectionError:
