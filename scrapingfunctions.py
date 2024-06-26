@@ -8,7 +8,7 @@ import threading
 import datetime
 
 
-# the main function that will run the scrape
+# the main function that performs all the checks, calls other functions and executes them. Basically the core.
 def run(url_list:list,
         element_list:list,
         payload_list:list,
@@ -110,14 +110,13 @@ def run(url_list:list,
                         return error_handler('no payloads for post')
 
 
-
+# this function executes the scrape i.e sending the web requests, handling errors and storing the scraped data.
 def request_executor(url, params_list, elems_list, req_type):
     if req_type == 'GET':
-        print('GET request')
         if params_list['no parameter']['value'] == 'false':
             try:
-                print('getting')
                 req = requ.get(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
+                code = req.status_code
                 req = req.content
 
                 scraped_page = bs(req, features='html.parser').prettify()
@@ -130,6 +129,7 @@ def request_executor(url, params_list, elems_list, req_type):
                     print(save_path)
                     with open(save_path, 'w', errors='ignore') as f_w:
                         f_w.write(scraped_page)
+                        webpage_logger(time=str(datetime.datetime.now(), url=url, status=code, parameters=params_list))
 
                 else:
                     elems = elems_list['elements']
@@ -140,9 +140,10 @@ def request_executor(url, params_list, elems_list, req_type):
                             element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
                             for i in element_scraped:
                                 f_a.write(f'{i.text}\n')
-                    
+                                element_logger(time=str(datetime.datetime.now(), url=url, element=i['name'], status=code, parameters=params_list))
+
             except:
-                print('Error')
+                return 'error with request'
         else:
             try:
                 req = requ.get(url=url)
@@ -160,6 +161,7 @@ def request_executor(url, params_list, elems_list, req_type):
                     print(save_path)
                     with open(save_path, 'w', errors='ignore') as f_w:
                         f_w.write(scraped_page)
+                        webpage_logger(time=str(datetime.datetime.now(), url=url, status=code, parameters=params_list))
                 
                 else:
                     elems = elems_list['elements']
@@ -170,6 +172,8 @@ def request_executor(url, params_list, elems_list, req_type):
                             element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
                             for i in element_scraped:
                                 f_a.write(f'{i.text}\n')
+                                element_logger(time=str(datetime.datetime.now(), url=url, element=i['name'], status=code, parameters=params_list))
+                                
 
             except ConnectionError:
                 print('connection error')
@@ -178,7 +182,7 @@ def request_executor(url, params_list, elems_list, req_type):
         print('POST request')
         pass
 
-
+# takes an error as parameter and returns appropriate error message
 def error_handler(type_of_error:str):
     if type_of_error == 'no urls':
         return 'show nan_url error'
@@ -193,9 +197,12 @@ def error_handler(type_of_error:str):
         return 'show post_without_payload error'
 
 
-def status_returner():
-    pass
+def element_logger(**kwargs:list):
+    direc = os.curdir
+    with open(f'{direc}\\{datetime.datetime.now()}.txt', 'a') as logs:
+        logs.write(f'[{kwargs['status']}] {kwargs['time']} {kwargs['url']} {kwargs['element']} {kwargs['parameters']}')
 
-
-def logger(**kwargs:list):
-    pass
+def webpage_logger(**kwargs:list):
+    direc = os.curdir
+    with open(f'{direc}\\{datetime.datetime.now()}.txt', 'a') as logs:
+        logs.write(f'[{kwargs['status']}] {kwargs['time']} {kwargs['url']} {kwargs['parameters']}')

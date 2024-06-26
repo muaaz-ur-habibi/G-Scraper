@@ -30,6 +30,7 @@ def hide_all_widgets():
     w_r_p_select.hide()
     w_r_p_add_param.hide()
     w_r_p_add_param_value.hide()
+    w_r_p_list.hide()
     w_r_p_add_button.hide()
 
     ask.hide()
@@ -69,6 +70,7 @@ def display_set_payloads_controls():
     w_r_p_select.show()
     w_r_p_add_param.show()
     w_r_p_add_param_value.show()
+    w_r_p_list.show()
     w_r_p_add_button.show()
 
 def display_set_elements_to_scrape():
@@ -410,6 +412,9 @@ w_r_p_add_button.setFont(QFont('Segoe UI'))
 w_r_p_add_button.setFixedWidth(40)
 w_r_p_add_button.move(400, 119)
 w_r_p_add_button.clicked.connect(lambda: add_to_list('payload'))
+
+w_r_p_list = QListWidget(display_frame)
+w_r_p_list.setGeometry(10, 115, 380, 360)
 
 w_r_p_label.hide()
 w_r_p_site_label.hide()
