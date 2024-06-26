@@ -359,7 +359,7 @@ e_t_s_for_site.setFixedSize(300, 20)
 e_t_s_for_site.addItem('Select site this element belongs to')
 
 e_t_s_list = QListWidget(display_frame)
-e_t_s_list.setGeometry(10, 115, 380, 360)
+e_t_s_list.setGeometry(10, 115, 380, 350)
 
 e_t_s_label.hide()
 e_t_s_elem.hide()

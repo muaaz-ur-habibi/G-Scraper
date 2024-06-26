@@ -119,9 +119,8 @@ def request_executor(url, params_list, elems_list, req_type):
                 code = req.status_code
                 req = req.content
 
-            except:
+            except ConnectionError:
                 print('error with request')
-                return 'error with request'
 
             scraped_page = bs(req, features='html.parser').prettify()
 
@@ -150,23 +149,25 @@ def request_executor(url, params_list, elems_list, req_type):
         else:
             try:
                 req = requ.get(url=url)
-                print(req.url)
+                code = req.status_code
                 req = req.content
+            except ConnectionError:
+                print('connection error')
 
-                page_soup = bs(req, features='html.parser')
-                scraped_page = page_soup.prettify()
+            page_soup = bs(req, features='html.parser')
+            scraped_page = page_soup.prettify()
 
-                curr_dir = os.getcwd()
+            curr_dir = os.getcwd()
                 
                 # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
-                if elems_list == []:
+            if elems_list == []:
                     save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
                     print(save_path)
                     with open(save_path, 'w', errors='ignore') as f_w:
                         f_w.write(scraped_page)
                         webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list)
                 
-                else:
+            else:
                     elems = elems_list['elements']
                     save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
 
@@ -177,9 +178,6 @@ def request_executor(url, params_list, elems_list, req_type):
                                 f_a.write(f'{i.text}\n')
                                 element_logger(time=str(datetime.datetime.now()), url=url, element=i['name'], status=code, parameters=params_list)
                                 
-
-            except ConnectionError:
-                print('connection error')
 
     elif req_type == 'POST':
         print('POST request')
