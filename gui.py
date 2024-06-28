@@ -163,7 +163,7 @@ def add_to_list(which_list):
             elements_list.append(elem_data)
         
             # append to other required lists
-            e_t_s_list.addItem(f"{elements_list[-1]['name']}: {elements_list[-1]['attribute']} {elements_list[-1]['attribute value']} FOR {elements_list[-1]['for site']}")
+            e_t_s_list.addItem(f"{elements_list[-1]['name']}: {elements_list[-1]['attribute']}->{elements_list[-1]['attribute value']} FOR {elements_list[-1]['for site']}")
 
     elif which_list == 'payload':
         # get the parameters values
@@ -190,7 +190,7 @@ def add_to_list(which_list):
 
             payloads_list.append(payl_data)
 
-            w_r_p_list.addItem(f"{payloads_list[-1]['type']}: {payloads_list[-1]['param']} {payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
+            w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).capitalize()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
 
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
@@ -233,7 +233,10 @@ def start_scrape():
         alert_payload.setText('Error')
         alert_payload.setInformativeText('A POST request is trying to be sent without any payloads. Please define a payload to be sent with the POST request')
         alert_payload.exec_()
-
+    
+    if '$OUTPUT' in r:
+        print('\n\nI recieved an output\n\n')
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 site_list = []

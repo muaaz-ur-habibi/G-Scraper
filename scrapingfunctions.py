@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as bs
 import os
 
 import threading
+import random
 
 import datetime
 
@@ -15,144 +16,161 @@ def run(url_list:list,
         **kwargs
         ):
 
-
-    if url_list == []:
-        return error_handler('no urls')
-    elif element_list == [] and 'nullify_elem_error' not in kwargs.keys():
-        return error_handler('no elements')
-    elif payload_list == []:
-        return error_handler('no payloads')
+    if 'verbose_output' in kwargs.keys():
+        print('I RECIEVED THE VERBOSE OUTPUT')
+        output = ' '.join(o for o in kwargs['verbose_output'])
+        print(output)
+        return f"$OUTPUT: {output}"
     else:
-        pass
-    print('scrape started')
-
-    # cleaning and prettifying the payload data
-    grouped_data_element_payload = {}
-
-    # Process the list
-    for entry in payload_list:
-        site = entry['for site']
-        entry_type = entry['type']
-        if entry_type.lower() != 'no parameter':
-            param = entry['param']
-            param_value = entry['param value']
-
-            # Initialize the site entry if it doesn't exist
-            if site not in grouped_data_element_payload:
-                grouped_data_element_payload[site] = {
-                    'for site': site,
-                    'headers': {},
-                    'files': {},
-                    'payload': {},
-                    'json': {},
-                    'no parameter': {'value': 'false'}
-                }
-
-            # Add the param and param value to the appropriate type
-            grouped_data_element_payload[site][entry_type][param] = param_value
+        if url_list == []:
+            return error_handler('no urls')
+        elif element_list == [] and 'nullify_elem_error' not in kwargs.keys():
+            return error_handler('no elements')
+        elif payload_list == []:
+            return error_handler('no payloads')
         else:
-            if site not in grouped_data_element_payload:
-                grouped_data_element_payload[site] = {
-                    'for site': site,
-                    'no parameter': {},
-                }
+            pass
 
-            # Add the param and param value to the appropriate type
-            grouped_data_element_payload[site][entry_type]['value'] = 'true'
+        # cleaning and prettifying the payload data
+        grouped_data_element_payload = {}
 
-    # Convert the grouped data into the desired format
-    url_param_list = list(grouped_data_element_payload.values())
+        # Process the list
+        for entry in payload_list:
+            site = entry['for site']
+            entry_type = entry['type']
+            if entry_type.lower() != 'no parameter':
+                param = entry['param']
+                param_value = entry['param value']
+
+                # Initialize the site entry if it doesn't exist
+                if site not in grouped_data_element_payload:
+                    grouped_data_element_payload[site] = {
+                        'for site': site,
+                        'headers': {},
+                        'files': {},
+                        'payload': {},
+                        'json': {},
+                        'no parameter': {'value': 'false'}
+                    }
+
+                # Add the param and param value to the appropriate type
+                grouped_data_element_payload[site][entry_type][param] = param_value
+            else:
+                if site not in grouped_data_element_payload:
+                    grouped_data_element_payload[site] = {
+                        'for site': site,
+                        'no parameter': {},
+                    }
+
+                # Add the param and param value to the appropriate type
+                grouped_data_element_payload[site][entry_type]['value'] = 'true'
+
+        # Convert the grouped data into a list
+        url_param_list = list(grouped_data_element_payload.values())
 
 
-    grouped_data_element = {}
+        grouped_data_element = {}
 
-# Group the elements by 'for site'
-    for entry in element_list:
-        site = entry['for site']
-        element = {k: v for k, v in entry.items() if k != 'for site'}
+        # Group the elements by URLs
+        for entry in element_list:
+            site = entry['for site']
+            element = {k: v for k, v in entry.items() if k != 'for site'}
 
-        if site not in grouped_data_element:
-            grouped_data_element[site] = []
+            if site not in grouped_data_element:
+                grouped_data_element[site] = []
 
-        grouped_data_element[site].append(element)
+            grouped_data_element[site].append(element)
 
-    # Convert the dictionary to the desired list of dictionaries format
-    print(url_list)
-    element_with_url_list = [{'url': site, 'elements': elements} for site, elements in grouped_data_element.items()]
+        # Convert the dictionary to the desired list of dictionaries format
+        element_with_url_list = [{'url': site, 'elements': elements} for site, elements in grouped_data_element.items()]
 
-    element_with_url_list = sorted(element_with_url_list, key=lambda x: [i['url'] for i in url_list].index(x['url']))
+        element_with_url_list = sorted(element_with_url_list, key=lambda x: [i['url'] for i in url_list].index(x['url']))
 
-    
-    for n in range(len(url_param_list)):
-        print('getting url')
-        url = url_list[n]['url']
-        req_type = url_list[n]['request type']
+        # iterate through the amount of urls
+        for n in range(len(url_param_list)):
+            # get the url at the url index
+            url = url_list[n]['url']
+            # get url request type
+            req_type = url_list[n]['request type']
 
-        print(url)
-        print(req_type)
-
-        if url_param_list[n]['for site'] == url:
-                print(url_param_list[n])
+            # check if the two url names match
+            if url_param_list[n]['for site'] == url:
+                # set element list as empty if no elements are found
                 element_with_url_list = element_with_url_list[n] if element_with_url_list != [] else []
                 if url_param_list[n]['no parameter']['value'] == 'false':
-                    print('parameters are defined')
-                    print('sending request with data')
-                    print(element_with_url_list)
+                    # start the thread without any request parameters
                     r = threading.Thread(target=request_executor, args=(url, url_param_list[n], element_with_url_list, req_type))
                     r.start()
                 elif url_param_list[n]['no parameter']['value'] == 'true':
-                    print('no parameters')
                     if req_type == 'GET':
+                        # start the GET request with request parameters
                         print('sending get request without data')
                         r = threading.Thread(target=request_executor, args=(url, url_param_list[n], element_with_url_list, req_type))
                         r.start()
+                    # if the request type is a POST and no parameters are found throw an error
                     elif req_type == 'POST':
                         return error_handler('no payloads for post')
 
 
 # this function executes the scrape i.e sending the web requests, handling errors and storing the scraped data.
-def request_executor(url, params_list, elems_list, req_type):
+def request_executor(url, params_list:dict, elems_list, req_type):
+    # change the format of the parameters list to a string for the verbose output
+    v_o_params_list = ' '.join(f'{i}: {j}' for i, j in params_list.items())
+
+    # handle GET requests
     if req_type == 'GET':
+        # check for any request parameters
         if params_list['no parameter']['value'] == 'false':
+            # catch a connection error
             try:
+                run(verbose_output=[str(datetime.datetime.now()), url, 'running', v_o_params_list, 'scraping', 'GET'], url_list=[], element_list=[], payload_list=[])
                 req = requ.get(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
                 code = req.status_code
                 req = req.content
-
             except ConnectionError:
-                print('error with request')
+                # log the connection error
+                error_logger(url=url, time=str(datetime.datetime.now()), status='ERROR', error='Connection Error', request_type=req_type)
+                run(verbose_output=[str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'scraping', 'GET'], url_list=[], element_list=[], payload_list=[])
 
-            scraped_page = bs(req, features='html.parser').prettify()
+            # scrape and prettify the page with bs4
+            page_soup = bs(req, features='html.parser')
+            scraped_page = page_soup.prettify()
 
+            # get current working directory
             curr_dir = os.getcwd()
 
             # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
             if elems_list == []:
-                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
-                    print(save_path)
-                    with open(save_path, 'w', errors='ignore') as f_w:
-                        f_w.write(scraped_page)
-                        webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list)
+                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
+
+                # open the save file and assign it a unique name
+                with open(save_path, 'w', errors='ignore') as f_w:
+                    f_w.write(scraped_page)
+                    webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list, request_type=req_type)
 
             else:
-                    elems = elems_list['elements']
-                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
+                elems = elems_list['elements']
+                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
 
-                    with open(save_path, 'a') as f_a:
-                        for i in elems:
-                            element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
-                            for i in element_scraped:
-                                f_a.write(f'{i.text}\n')
-                                element_logger(time=str(datetime.datetime.now()), url=url, element=f"{i['name']} {i['attribute']}", status=code, parameters=params_list)
+                # open the save file and assign it a unique name
+                with open(save_path, 'a') as f_a:
+                    for i in elems:
+                        element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                        for i in element_scraped:
+                            f_a.write(f'{i.text}\n')
+                            element_logger(time=str(datetime.datetime.now()), url=url, element=f"{i['name']} {i['attribute']}", status=code, parameters=params_list, request_type=req_type)
+                            run(verbose_output=[str(datetime.datetime.now()), url, code, v_o_params_list, 'scraped', 'GET'])
 
-            
+        # Similiar working as above, just with the addition of sending request parameters as well
         else:
             try:
+                run(verbose_output=[str(datetime.datetime.now()), url, 'running', v_o_params_list, 'scraping', 'GET'], url_list=[], element_list=[], payload_list=[])
                 req = requ.get(url=url)
                 code = req.status_code
                 req = req.content
             except ConnectionError:
-                print('connection error')
+                error_logger(url=url, time=str(datetime.datetime.now()), status='ERROR', error='Connection Error', request_type=req_type)
+                run(verbose_output=[str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'connection error'], url_list=[], element_list=[], payload_list=[])
 
             page_soup = bs(req, features='html.parser')
             scraped_page = page_soup.prettify()
@@ -161,27 +179,63 @@ def request_executor(url, params_list, elems_list, req_type):
                 
                 # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
             if elems_list == []:
-                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
-                    print(save_path)
-                    with open(save_path, 'w', errors='ignore') as f_w:
-                        f_w.write(scraped_page)
-                        webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list)
+                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
+                print(save_path)
+                with open(save_path, 'w', errors='ignore') as f_w:
+                    f_w.write(scraped_page)
+                    webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list, request_type=req_type)
                 
             else:
-                    elems = elems_list['elements']
-                    save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
+                elems = elems_list['elements']
+                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
 
-                    with open(save_path, 'a') as f_a:
-                        for i in elems:
-                            element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
-                            for i in element_scraped:
-                                f_a.write(f'{i.text}\n')
-                                element_logger(time=str(datetime.datetime.now()), url=url, element=i['name'], status=code, parameters=params_list)
+                with open(save_path, 'a') as f_a:
+                    for i in elems:
+                        element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                        for i in element_scraped:
+                            f_a.write(f'{i.text}\n')
+                            element_logger(time=str(datetime.datetime.now()), url=url, element=i['name'], status=code, parameters=params_list, request_type=req_type)
+                            run(verbose_output=[str(datetime.datetime.now()), url, code, v_o_params_list, 'scraped'], url_list=[], element_list=[], payload_list=[])
                                 
-
+    # handle POST requests
     elif req_type == 'POST':
         print('POST request')
-        pass
+        # catch a connection error
+        try:
+            run(verbose_output=[str(datetime.datetime.now()), url, 'running', v_o_params_list, 'scraping', 'POST'], url_list=[], element_list=[], payload_list=[])
+            print(params_list['payload'])
+            req = requ.post(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
+            code = req.status_code
+            req = req.content
+        except ConnectionError:
+            # log the connection error
+            error_logger(url=url, time=str(datetime.datetime.now()), status='ERROR', error='Connection Error', request_type=req_type)
+            run(verbose_output=[str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'scraping', 'POST'], url_list=[], element_list=[], payload_list=[])
+
+        page_soup = bs(req, features='html.parser')
+        scraped_page = page_soup.prettify()
+
+        curr_dir = os.getcwd()
+
+        if elems_list == []:
+                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
+                print(save_path)
+                with open(save_path, 'w', errors='ignore') as f_w:
+                    f_w.write(scraped_page)
+                    webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list, request_type=req_type)
+                
+        else:
+            elems = elems_list['elements']
+            save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
+
+            with open(save_path, 'a') as f_a:
+                for i in elems:
+                    element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                    for i in element_scraped:
+                        f_a.write(f'{i.text}\n')
+                        element_logger(time=str(datetime.datetime.now()), url=url, element=i['name'], status=code, parameters=params_list, request_type=req_type)
+                        run(verbose_output=[str(datetime.datetime.now()), url, code, v_o_params_list, 'scraped'], url_list=[], element_list=[], payload_list=[])
+
 
 # takes an error as parameter and returns appropriate error message
 def error_handler(type_of_error:str):
@@ -198,12 +252,21 @@ def error_handler(type_of_error:str):
         return 'show post_without_payload error'
 
 
-def element_logger(**kwargs:list):
-    direc = os.curdir
-    with open(f'{direc}\\{datetime.datetime.now()}.txt', 'a') as logs:
-        logs.write(f'[{kwargs['status']}] {kwargs['time']} {kwargs['url']} {kwargs['element']} {kwargs['parameters']}')
+# functions that log their respective logs.
+# this logs the output with elements
+def element_logger(**kwargs):
+    direc = os.getcwd()
+    with open(f'{direc}\\logs\\element-log__{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}__{random.randint(0, 1000)}.txt', 'a') as logs:
+        logs.write(f'[{kwargs['request_type']}] [{kwargs['status']}] [{kwargs['time']}] url={kwargs['url']} elements={kwargs['element']} parameters={kwargs['parameters']}')
 
-def webpage_logger(**kwargs:list):
-    direc = os.curdir
-    with open(f'{direc}\\{datetime.datetime.now()}.txt', 'a') as logs:
-        logs.write(f'[{kwargs['status']}] {kwargs['time']} {kwargs['url']} {kwargs['parameters']}')
+# this logs the output with the entire webpage
+def webpage_logger(**kwargs):
+    direc = os.getcwd()
+    with open(f'{direc}\\logs\\webpage-log__{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}__{random.randint(0, 1000)}.txt', 'a') as logs:
+        logs.write(f'[{kwargs['request_type']}] [{kwargs['status']}] [{kwargs['time']}] url={kwargs['url']} parameters={kwargs['parameters']}')
+
+# this logs errors
+def error_logger(**kwargs):
+    direc = os.getcwd()
+    with open(f'{direc}\\logs\\error-log__{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}__{random.randint(0, 1000)}.txt', 'a') as logs:
+        logs.write(f'[{kwargs['request_type']}] [{kwargs['status']}] [{kwargs['time']}] url={kwargs['url']} error={kwargs['error']}')
