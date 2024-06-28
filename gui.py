@@ -203,13 +203,14 @@ def get_elem_error_response(i):
             alert_payload.setText('Error')
             alert_payload.setInformativeText('A POST request is trying to be sent without any payloads. Please define a payload to be sent with the POST request')
             alert_payload.exec_()
+        elif isinstance(r, list):
+            print('The output has been recieved')
     elif i.text() == '&No':
         display_set_elements_to_scrape()
 
 
 # the function that actually starts the scraping
 def start_scrape():
-    print('start scrape function')
     r = run(url_list=site_list, element_list=elements_list, payload_list=payloads_list)
     # handle the case where no urls are added. what are they trying to scrape?
     if r == 'show nan_url error':
@@ -228,14 +229,14 @@ def start_scrape():
         alert_payload.setText('Error')
         alert_payload.setInformativeText('No payloads were specified. If you wish to scrape without any web parameters, select the "No parameters" option for the site in payloads setting option')
         alert_payload.exec_()
+    elif isinstance(r, list):
+        print('The output has been recieved')
     # handling the case where a post request is trying to be sent without any payloads/web parameters. What are they trying to POST?
     if r == 'show post_without_payload error':
         alert_payload.setText('Error')
         alert_payload.setInformativeText('A POST request is trying to be sent without any payloads. Please define a payload to be sent with the POST request')
         alert_payload.exec_()
-    
-    if '$OUTPUT' in r:
-        print('\n\nI recieved an output\n\n')
+
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
