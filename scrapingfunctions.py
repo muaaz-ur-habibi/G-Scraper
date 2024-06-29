@@ -92,7 +92,7 @@ def run(url_list:list,
 
         grouped_data_element[site].append(element)
 
-        # Convert the dictionary to the desired list of dictionaries format
+    # Convert the dictionary to the desired list of dictionaries format
     element_with_url_list = [{'url': site, 'elements': elements} for site, elements in grouped_data_element.items()]
 
     element_with_url_list = sorted(element_with_url_list, key=lambda x: [i['url'] for i in url_list].index(x['url']))
@@ -113,15 +113,16 @@ def run(url_list:list,
                 r = CustomThread(target=request_executor, args=(url, url_param_list[n], element_with_url_list, req_type))
                 r.start()
                 # Wait till a response is recieved, then send that response back to the gui
-                return r.join()
+                #return r.join()
             elif url_param_list[n]['no parameter']['value'] == 'true':
                 if req_type == 'GET':
                     # start the thread and pass parameters as args
                     r = CustomThread(target=request_executor, args=(url, url_param_list[n], element_with_url_list, req_type))
                     r.start()
                     # Wait till a response is recieved, then send that response back to the gui
-                    return r.join()
-                    # if the request type is a POST and no parameters are found throw an error
+                    #return r.join()
+                
+                # if the request type is a POST and no parameters are found throw an error
                 elif req_type == 'POST':
                     return error_handler('no payloads for post')
 
@@ -147,7 +148,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 error_logger(url=url, time=str(datetime.datetime.now()), status='ERROR', error='Connection Error', request_type=req_type)
 
                 # return the output for a user on the GUI
-                return [str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'Connection Error', 'GET', '-', 'error scrape']
+                #return [str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'Connection Error', 'GET', '-', 'error scrape']
 
             # scrape and prettify the page with bs4
             page_soup = bs(req, features='html.parser')
@@ -169,7 +170,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     diff = finish_time - start_time
 
                     # return the output for a user on the GUI
-                    return [diff, url, 'scraped', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
+                    #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
 
             else:
                 elems = elems_list['elements']
@@ -177,17 +178,17 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
                 # open the save file and assign it a unique name
                 with open(save_path, 'a') as f_a:
-                    for i in elems:
-                        element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                    for x in elems:
+                        element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
                         for i in element_scraped:
-                            f_a.write(f'{i.text}\n')
+                            f_a.write(f'{str(i.text).strip()}\n')
                             element_logger(time=str(datetime.datetime.now()), url=url, element=f"{i['name']} {i['attribute']}", status=code, parameters=params_list, request_type=req_type)
                             
                             finish_time = datetime.datetime.now()
                             diff = finish_time - start_time
                             
                             # return the output for a user on the GUI
-                            return [diff, url, f"{i['name']} {i['attribute']}", v_o_params_list, 'no errors', 'GET', code, 'elemental scrape']
+                            #return [diff.total_seconds(),  url, f"{x['name']}:::{x['attribute']}:::{x['attribute value']}", v_o_params_list, 'no errors', 'GET', code, 'elemental scrape']
 
         # Similiar working as above, just without any request parameters
         else:
@@ -200,7 +201,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 error_logger(url=url, time=str(datetime.datetime.now()), status='ERROR', error='Connection Error', request_type=req_type)
 
                 # return the output for a user on the GUI
-                return [str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'Connection Error', 'GET', '-', 'error scrape']
+                #return [str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'Connection Error', 'GET', '-', 'error scrape']
 
             page_soup = bs(req, features='html.parser')
             scraped_page = page_soup.prettify()
@@ -209,6 +210,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 
             # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
             if elems_list == []:
+                print('no elements')
                 save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
                 print(save_path)
                 with open(save_path, 'w', errors='ignore') as f_w:
@@ -220,26 +222,30 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     diff = finish_time - start_time
 
                     # return the output for a user on the GUI
-                    return [diff, url, 'scraped', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
+                    #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
                 
             else:
+                print('elements present')
                 elems = elems_list['elements']
+                print(elems)
                 save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
 
                 with open(save_path, 'a') as f_a:
-                    for i in elems:
-                        element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                    for x in elems:
+                        print(x)
+                        element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
+                        print(element_scraped)
                         for i in element_scraped:
-                            f_a.write(f'{i.text}\n')
-                            element_logger(time=str(datetime.datetime.now()), url=url, element=i['name'], status=code, parameters=params_list, request_type=req_type)
-
+                            f_a.write(f'\n{str(i.text).strip()}\n')
                             # Calculating the time taken to process the request
                             finish_time = datetime.datetime.now()
                             diff = finish_time - start_time
 
+                            element_logger(time=str(datetime.datetime.now()), url=url, element=x['name'], status=code, parameters=params_list, request_type=req_type)
+
                             # return the output for a user on the GUI
-                            return [diff, url, f"{i['name']} {i['attribute']}", v_o_params_list, 'no errors', 'GET', code, 'elemental scrape']
-                                
+                            #return [diff.total_seconds(),  url, f"{x['name']}:::{x['attribute']}:::{x['attribute value']}", v_o_params_list, 'no errors', 'GET', code, 'elemental scrape']
+                        
     # handle POST requests
     elif req_type == 'POST':
         # catch a connection error
@@ -265,30 +271,32 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
             with open(save_path, 'w', errors='ignore') as f_w:
                 f_w.write(scraped_page)
-                webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list, request_type=req_type)
-
+                # calculating time taken for scrape to 
                 finish_time = datetime.datetime.now()
                 diff = finish_time - start_time
+                webpage_logger(time=str(datetime.datetime.now()), url=url, status=code, parameters=params_list, request_type=req_type)
+
+                
 
                 # return the output for a user on the GUI
-                return [diff, url, 'scraped', v_o_params_list, 'no errors', 'POST', code, 'pagical scrape']
+                #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'POST', code, 'pagical scrape']
                 
         else:
             elems = elems_list['elements']
             save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-elements_scraped.txt'
 
             with open(save_path, 'a') as f_a:
-                for i in elems:
-                    element_scraped = page_soup.find_all(i['name'], {i['attribute']: i['attribute value']})
+                for x in elems:
+                    element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
                     for i in element_scraped:
-                        f_a.write(f'{i.text}\n')
-                        element_logger(time=str(datetime.datetime.now()), url=url, element=i['name'], status=code, parameters=params_list, request_type=req_type)
+                        f_a.write(f'{str(i.text).strip()}\n')
+                        element_logger(time=str(datetime.datetime.now()), url=url, element=x['name'], status=code, parameters=params_list, request_type=req_type)
 
                         finish_time = datetime.datetime.now()
                         diff = finish_time - start_time
                         
                         # return the output for a user on the GUI
-                        return [diff, url, 'scraped', v_o_params_list, 'no errors', 'POST', code, 'elemental scrape']
+                        #return [diff.total_seconds(),  url, f"{x['name']}:::{x['attribute']}:::{x['attribute value']}", v_o_params_list, 'no errors', 'POST', code, 'elemental scrape']
 
 
 # takes an error as parameter and returns appropriate error message

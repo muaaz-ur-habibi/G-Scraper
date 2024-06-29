@@ -41,15 +41,6 @@ def hide_all_widgets():
     yes_button.hide()
     no_button.hide()
 
-    main.hide()
-    current_url_l.hide()
-    current_url.hide()
-    current_element_l.hide()
-    current_url_status_code.hide()
-    percentage_of_data_scraped.hide()
-    error_message.hide()
-    progress_bar.hide()
-
 
 def display_set_site_controls():
     hide_all_widgets()
@@ -103,6 +94,21 @@ def display_final_button():
     show_elems_list.show()
     yes_button.show()
     no_button.show()
+
+def reset_app():
+    s_a_p_list.clear()
+    e_t_s_list.clear()
+    w_r_p_list.clear()
+    show_site_list.clear()
+    show_elems_list.clear()
+
+    site_list.clear()
+    elements_list.clear()
+    payloads_list.clear()
+
+    display_set_site_controls()
+    pass
+
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 # functions that handle the data in the app
 
@@ -190,7 +196,7 @@ def add_to_list(which_list):
 
             payloads_list.append(payl_data)
 
-            w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).capitalize()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
+            w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).upper()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
 
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
@@ -204,7 +210,7 @@ def get_elem_error_response(i):
             alert_payload.setInformativeText('A POST request is trying to be sent without any payloads. Please define a payload to be sent with the POST request')
             alert_payload.exec_()
         elif isinstance(r, list):
-            print('The output has been recieved')
+            print(f'The output has been recieved\n\n{r}')
     elif i.text() == '&No':
         display_set_elements_to_scrape()
 
@@ -229,8 +235,12 @@ def start_scrape():
         alert_payload.setText('Error')
         alert_payload.setInformativeText('No payloads were specified. If you wish to scrape without any web parameters, select the "No parameters" option for the site in payloads setting option')
         alert_payload.exec_()
+    
+    # for the verbose output
     elif isinstance(r, list):
-        print('The output has been recieved')
+        pass
+
+    
     # handling the case where a post request is trying to be sent without any payloads/web parameters. What are they trying to POST?
     if r == 'show post_without_payload error':
         alert_payload.setText('Error')
@@ -289,6 +299,13 @@ final_send_button.setFixedSize(170, 50)
 final_send_button.move(10, 220)
 final_send_button.setText("Start Scraping")
 final_send_button.clicked.connect(lambda: display_final_button())
+
+# A button to reset the app's data
+reset_app_data = QPushButton(control_frame)
+reset_app_data.setText("Reset App Data")
+reset_app_data.move(10, 280)
+reset_app_data.setFixedSize(170, 50)
+reset_app_data.clicked.connect(lambda: reset_app())
 
 
 #---------------------------------------------------
@@ -477,60 +494,6 @@ show_elems_list_l.hide()
 show_elems_list.hide()
 yes_button.hide()
 no_button.hide()
-
-#---------------------------------------------------
-# widgets for verbose output of scrape
-main = QLabel(display_frame)
-main.setText('Scrape Status')
-main.setFont(QFont('Segoe UI', 13))
-main.move(10, 30)
-
-current_url_l = QLabel(display_frame)
-current_url_l.setText('<b>Now sending: </b>')
-current_url_l.move(10, 60)
-current_url_l.setFont(QFont('Segoe UI', 11))
-
-current_url = QLabel(display_frame)
-current_url.move(50, 60)
-current_url.setFont(QFont('Segoe UI', 10))
-
-current_url_status_code = QLabel(display_frame)
-current_url_status_code.move(10, 80)
-current_url_status_code.setFont(QFont("Segoe UI", 10))
-current_url_status_code.setText('Status Code: ')
-
-
-current_element_l = QLabel(display_frame)
-current_element_l.move(10, 120)
-current_element_l.setFont(QFont('Segoe UI', 11))
-current_element_l.setText('<b>Now scraping: </b>')
-
-
-percentage_of_data_scraped = QLabel(display_frame)
-percentage_of_data_scraped.setFont(QFont('Segoe UI', 10))
-percentage_of_data_scraped.move(10, 160)
-percentage_of_data_scraped.setText('Elements scraped: ')
-
-
-error_message = QLabel(display_frame)
-error_message.move(10, 220)
-error_message.setFont(QFont('Segoe UI', 10))
-error_message.setStyleSheet('color: red;')
-error_message.setText('an error occured')
-
-progress_bar = QProgressBar(display_frame)
-progress_bar.setFixedSize(300, 20)
-progress_bar.move(10, 180)
-
-
-main.hide()
-current_url_l.hide()
-current_url.hide()
-current_element_l.hide()
-current_url_status_code.hide()
-percentage_of_data_scraped.hide()
-error_message.hide()
-progress_bar.hide()
 
 #-----------------------------------------------------
 # universal alert box
