@@ -35,7 +35,7 @@
   <li>✅ Unique way for generating unique filename for each log AND save data file so that no mixups happen</li>
 </ol>
 <hr>
-<h3>What is used to create this:</h3>
+<h3>Libraries used to create this:</h3>
 <b>Main:</b>
 <ul>
   <li>PyQT5 (for the GUI)</li>
@@ -49,4 +49,4 @@
   <li>random (used in file creation)</li>
   <li>os (used to get current working directory)</li>
 </ul>
-Note: all these are Python libraries
+<hr>
