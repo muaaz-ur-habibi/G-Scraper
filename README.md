@@ -9,7 +9,7 @@
 <h4>Why:</h4>
 <p>I was searching through reddit one day for project ideas and came across a post complaining about there not being any GUI web scrapers. So without looking any further into it on whether there is one or is'nt I jumped into making one.</p>
 <h4>Features:</h4>(✅means that it is implemented. ❌means that i am working on it.)
-<l>
+<ol>
   <li>✅ Supports 2 request types; GET & POST (at the moment)</li>
   <li>✅ Shows all your added info in a list</li>
   <li>✅ Can scrape multiple URLs</li>
@@ -30,4 +30,4 @@
   <li>✅ Can reset the entire app to start brand new after a scrape/set of scrapes</li>
   <li>❌ Provides verbose output to user in the GUI (this is very hard)</li>
   <li>❌ User can set 'presets', basically if user does a scrape repetitively they can set a preset. User can then just load and run the preset without having to define the variables each time</li>
-</l>
+</ol>
