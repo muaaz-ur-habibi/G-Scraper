@@ -1,5 +1,5 @@
-<h1><center>G-Scraper</center></h1>
-<h3><center>A GUI based web scraper, written wholly in Python</center></h3>
+<h1 align="center"><center>G-Scraper</center></h1>
+<h3 align="center"><center>A GUI based web scraper, written wholly in Python</center></h3>
 <hr>
 <h4>What:</h4>
 <p>
