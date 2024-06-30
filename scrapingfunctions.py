@@ -139,7 +139,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
             # catch a connection error
             try:
                 start_time = datetime.datetime.now()
-                print(start_time)
+
                 req = requ.get(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
                 code = req.status_code
                 req = req.content
@@ -212,9 +212,9 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 
             # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
             if elems_list == []:
-                print('no elements')
+
                 save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '')}-web_scraped.txt'
-                print(save_path)
+
                 with open(save_path, 'a', errors='ignore') as f_w:
                     f_w.write(scraped_page)
                     webpage_logger(time=f"Start Time: {start_time}  End Time: {str(datetime.datetime.now())}", url=url, status=code, parameters=params_list, request_type=req_type)
