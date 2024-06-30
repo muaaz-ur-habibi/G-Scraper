@@ -48,5 +48,5 @@
   <li>datetime (used in logging and saved data file creation)</li>
   <li>random (used in file creation)</li>
   <li>os (used to get current working directory)</li>
-  Note: all these are Python libraries
 </ul>
+Note: all these are Python libraries
