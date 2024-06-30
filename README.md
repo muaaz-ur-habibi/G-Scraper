@@ -36,13 +36,13 @@
 </ol>
 <hr>
 <h4>What is used to create this:</h4>
-<u>Main:</u>
-Python (duh)<br>
-PyQT5 (for the GUI)<br>
-Requests (for the requests)<br>
-BeautifulSoup4 (for scraping and parsing the returned HTML)<br>
-threading (for threading)<br>
-<u>Add ons:</u>
-datetime (used in logging and saved data file creation)<br>
-random (used in saved data file creation)<br>
-os (used to get current working directory)<br>
+<u>Main:</u><br>
+1. Python (duh)<br>
+2. PyQT5 (for the GUI)<br>
+3. Requests (for the requests)<br>
+4. BeautifulSoup4 (for scraping and parsing the returned HTML)<br>
+5. threading (for threading)<br>
+<u>Add ons:</u><br>
+1. datetime (used in logging and saved data file creation)<br>
+2. random (used in saved data file creation)<br>
+3. os (used to get current working directory)<br>
