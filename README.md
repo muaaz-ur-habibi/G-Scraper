@@ -3,7 +3,7 @@
 <hr>
 <h3>What❓:</h3>
 <p>
-  A fun little side project that I made.
+  A GUI based web scraper written in Python. Useful for data collectors who want a nice UI for scraping data from many sites.
 </p>
 <hr>
 <h3>Why❓:</h3>
@@ -51,6 +51,7 @@
 </ul>
 <hr>
 <h3>How to use:</h3>
+(video demo will be coming soon)
 <p>
   <b>STEP 1: Adding URLs</b><br>
   -Add sites to scrape.<br>
