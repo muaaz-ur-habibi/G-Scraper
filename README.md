@@ -17,7 +17,7 @@
   <li>✅ Can scrape multiple URLs</li>
   <li>✅ Can scrape multiple elements from the same URL (webpage)</li>
   <li>✅ So putting the two together, can scrape multiple elements from multiple URLs, ensuring that the element is from the URL it was assigned to</li>
-  <li>✅ Can pass request parameters into the request to send for scrape</li>
+  <li>✅ Can pass request parameters into the request to send for scrape <b>EXCEPT FILES (for now)</b></li>
   <li>✅ Since parameters can be passed, it can also handle logins/signups</li>
   <li>✅ Saves the scraped data in a seperate 'data/scraped-data' folder</li>
   <li>Has a logging function: logs 3 types of outputs<ul>
@@ -50,3 +50,18 @@
   <li>os (used to get current working directory) ⚡</li>
 </ul>
 <hr>
+<h3>How to use:</h3>
+<p>
+  <b>STEP 1: Adding URLs</b><br>
+  Add sites to scrape. To do this select the "Set the Site to scrape" button and a enter in the URL of any number of websites you wish to scrape, along with its request method (THIS IS COMPULSORY). Then just click on the "+" button and it is added. Note: URL should have format like 'https://someurl.com; simply click the URL bar at the top of the webpage, Ctrl+C, then Ctrl+V in the textbox. Note 2: add one URL at a time. Dont just enter the entire list into the text-box. Note 3: As of now once you have added something you cannot remove it, you must reset the entire app's data.<br><br>
+  
+  <b>STEP 2: Adding Elements (OPTIONAL)</b><br>
+  Add elements of that site to scrape. This is optional in the sense that if you don't specify any elements the app will scrape the entire webpage. To specify, click the "Set the elements to scrape" button. In here you are presented with 3 text boxes: one for the element name, one for the attribute to specify (OPTIONAL) and one for the attribute value (OPTIONAL). So if you want to scrape a div with class of text-box, in the HTML of the webpage it would look like: div class="text-box". Here, "div" is the element name, "class" is the element attribute, "text-box" is the attribute value. Once you have entered the element, you must then select the URL/site this element belongs to from the URLs you added in the previous step. Finally click on the "+" button and its added. Note: if there are multiple elements with the same properties you specified, the script will scrape all their data. Note 2: it is possible you to only specify the element name, nothing else; this will scrape all the elements of that tag<br><br>
+
+  <b>STEP 3: Specifying Request Parameters</b><br>
+  Add the web request parameters/payloads to send with your request. Click on "Set Payloads or Headers for scrape". First you select the site with which you want to associate these parameters with. Then you select the type. Currently, only FILE is not worked on, so it will probably throw an unexpected error. The rest work fine. (NOTE: IF YOU DONT WANT TO SEND ANY PARAMETERS YOU MUST SPECIFY SO BY SELECTING THE SITE YOU DONT WANT ANY PARAMETERS FOR AND SELECTING THE "NO PARAMETER" VALUE. LEAVE THE REST EMPTY AND ADD). After you have selected your parameter, specify its contents, then "ADD (+)"<br><br>
+
+  <b>STEP 4: Starting Scrape</b><br>
+  Once you have everything set, you can start the scrape by clicking on "Start Scraping". Then once you have reviewed all the details, you can select "Yes". Note: If you havent specified any elements to scrape, app will give you a warning. If you forgot to, you can go back and specify them. Else you can just click on "Yes".<br>
+</p>
+<p>As of now, there really isnt a way to give verbose output to the user. So once you start the scrape, just wait for a few seconds and check the scraped data folder in the data folder. Alternatively, if you find nothing there, you can check the logs folder to see if any error had occured.</p>
