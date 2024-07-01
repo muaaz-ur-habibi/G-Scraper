@@ -1,0 +1,4 @@
+beautifulsoup4==4.12.3
+PyQt5==5.15.10
+PyQt5_sip==12.13.0
+Requests==2.32.3
