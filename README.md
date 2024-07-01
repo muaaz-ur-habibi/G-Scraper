@@ -1,15 +1,15 @@
 <h1 align="center"><center>G-Scraper</center></h1>
 <h2 align="center"><center>A GUI based web scraper, written wholly in Python</center></h2>
 <hr>
-<h3>What:</h3>
+<h3>What❓:</h3>
 <p>
   A fun little side project that I made.
 </p>
 <hr>
-<h3>Why:</h3>
-<p>I was searching through reddit one day for project ideas and came across a post complaining about there not being any GUI web scrapers. So without looking any further into it on whether there is one or is'nt I decided to put my webscraping and python knowledge to use.</p>
+<h3>Why❓:</h3>
+<p>I was looking through Reddit for fun project ideas and came across a thread in which there was a comment of someone complaining about there not being a GUI Web Scraper. Thus I started working on G-Scraper.</p>
 <hr>
-<h3>Features:</h3>(✅means that it is implemented. ❌means that i am working on it.)
+<h3>Features ✨:</h3>(✅means that it is implemented. ❌means that i am working on it.)
 <br>
 <ol>
   <li>✅ Supports 2 request types; GET & POST (at the moment)</li>
@@ -38,15 +38,15 @@
 <h3>Libraries used to create this:</h3>
 <b>Main:</b>
 <ul>
-  <li>PyQT5 (for the GUI)</li>
-  <li>Requests (for the web requests)</li>
-  <li>BeautifulSoup4 (for scraping and parsing the HTML)</li>
-  <li>threading (for the seperate threads)</li>
+  <li>PyQT5 (for the GUI) 💻</li>
+  <li>Requests (for the web requests) 📶</li>
+  <li>BeautifulSoup4 (for scraping and parsing the HTML) 🍲</li>
+  <li>threading (for the seperate threads) 🧵</li>
 </ul>
 <b>Add ons:</b>
 <ul>
-  <li>datetime (used in logging and saved data file creation)</li>
-  <li>random (used in file creation)</li>
-  <li>os (used to get current working directory)</li>
+  <li>datetime (used in logging and saved data file creation) 📅⌚</li>
+  <li>random (used in file creation) ❔</li>
+  <li>os (used to get current working directory) ⚡</li>
 </ul>
 <hr>
