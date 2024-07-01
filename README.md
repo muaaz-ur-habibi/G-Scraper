@@ -9,7 +9,7 @@
 <h3>Why❓:</h3>
 <p>I was looking through Reddit for fun project ideas and came across a thread in which there was a comment of someone complaining about there not being a GUI Web Scraper. Thus I started working on G-Scraper.</p>
 <hr>
-<h3>Features ✨:</h3>(✅means that it is implemented. ❌means that i am working on it.)
+<h3>Features ✨:</h3>(✅ means that it is implemented. ❌ means that i am working on it.)
 <br>
 <ol>
   <li>✅ Supports 2 request types; GET & POST (at the moment)</li>
@@ -25,7 +25,7 @@
     <li>✅ Pagical   (for webpages)</li>
     <li>✅ Error     (for errors)</li>
   </ul></li>
-  <li>Handles all types of errors</li>
+  <li>✅ Handles all types of errors</li>
   <li>✅ Request function runs in a seperate thread than GUI so you can do things while your request is being run</li>
   <li>❌ Functionality to edit the variables once they have been added</li>
   <li>❌ Can delete an unwanted item from the list of added variables</li>
