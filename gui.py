@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
-from runner import run
+from core.runner import run
 
 
 # functions that show/hide certain widgets based on menu option user pressed
