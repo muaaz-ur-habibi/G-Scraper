@@ -53,6 +53,10 @@
 <h3>How to use:</h3>
 (video demo will be coming soon)
 <p>
+  <b>STEP 0: Install The App</b><br>
+  -Clone this repository on your machine<br>
+  -Run the command python gui.py inside the G-Scraper folder to launch the app
+  
   <b>STEP 1: Adding URLs</b><br>
   -Add sites to scrape.<br>
   -To do this select the "Set the Site to scrape" button and a enter in the URL of any number of websites you wish to scrape, along with its request method (THIS IS COMPULSORY).<br>
