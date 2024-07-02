@@ -77,7 +77,8 @@
   -In here you are presented with 3 text boxes: one for the element name, one for the attribute to specify (OPTIONAL) and one for the attribute value (OPTIONAL).<br>
   -So if you want to scrape a div with class of text-box, in the HTML of the webpage it would look like: div class="text-box". Here, "div" is the element name, "class" is the element attribute, "text-box" is the attribute value.<br>
   -Once you have entered the element, you must then select the URL/site this element belongs to from the URLs you added in the previous step.<br>
-  -Finally click on the "+" button and its added. Note: if there are multiple elements with the same properties you specified, the script will scrape all their data. Note 2: it is possible you to only specify the element name, nothing else; this will scrape all the elements of that tag<br><br>
+  -Finally click on the "+" button and its added. Note: if there are multiple elements with the same properties you specified, the script will scrape all their data. Note 2: it is possible you to only specify the element name, nothing else; this will scrape all the elements of that tag<br>
+-Note: In order to obtain the necessary info about an element, you will have to inspect it. Just right click on the element, select 'Inspect' then you will be presented with the HTML of the element. Use the info in the HTML to scrape it<br><br>
 
   <b>STEP 3: Specifying Request Parameters</b><br>
   -Add the web request parameters/payloads to send with your request.<br>
@@ -85,7 +86,8 @@
   -First you select the site with which you want to associate these parameters with.<br>
   -Then you select the type. Currently, only FILE is not worked on, so it will probably throw an unexpected error.<br>
   -The rest work fine. (NOTE: IF YOU DONT WANT TO SEND ANY PARAMETERS YOU MUST SPECIFY SO BY SELECTING THE SITE YOU DONT WANT ANY PARAMETERS FOR AND SELECTING THE "NO PARAMETER" VALUE. LEAVE THE REST EMPTY AND ADD).<br>
-  -After you have selected your parameter, specify its contents, then "ADD (+)"<br><br>
+  -After you have selected your parameter, specify its contents, then "ADD (+)"<br>
+-Note: If you want to obtain the payload, headers, or any web parameter data, you can do so in the Networking tab of Dev Tools.<br><br>
 
   <b>STEP 4: Starting Scrape</b><br>
   -Once you have everything set, you can start the scrape by clicking on "Start Scraping".<br>
