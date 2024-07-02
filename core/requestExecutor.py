@@ -56,8 +56,8 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     f_w.write(scraped_page)
                     webpage_logger(time=f"Start Time: {start_time}  End Time: {str(datetime.datetime.now())}", url=url, status=code, parameters=params_list, request_type=req_type)
 
-                    finish_time = datetime.datetime.now()
-                    diff = finish_time - start_time
+                    #finish_time = datetime.datetime.now()
+                    #diff = finish_time - start_time
 
                     # return the output for a user on the GUI
                     #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
@@ -118,8 +118,8 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     webpage_logger(time=f"Start Time: {start_time}  End Time: {str(datetime.datetime.now())}", url=url, status=code, parameters=params_list, request_type=req_type)
 
                     # Calculating the time taken to process the request
-                    finish_time = datetime.datetime.now()
-                    diff = finish_time - start_time
+                    #finish_time = datetime.datetime.now()
+                    #diff = finish_time - start_time
 
                     # return the output for a user on the GUI
                     #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
@@ -179,8 +179,8 @@ def request_executor(url, params_list:dict, elems_list, req_type):
             with open(save_path, 'a', errors='ignore') as f_w:
                 f_w.write(scraped_page)
                 # calculating time taken for scrape to 
-                finish_time = datetime.datetime.now()
-                diff = finish_time - start_time
+                #finish_time = datetime.datetime.now()
+                #diff = finish_time - start_time
                 webpage_logger(time=f"Start Time: {start_time}  End Time: {str(datetime.datetime.now())}", url=url, status=code, parameters=params_list, request_type=req_type)
 
                 
