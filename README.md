@@ -55,11 +55,12 @@
 <p>
   <b>STEP 0: Install The App</b><br>
   -Clone this repository on your machine<br>
-  -Run the command 
+  -Run the command
+  
   ```
     python gui.py
-  
-  ```inside the G-Scraper folder to launch the app
+  ```
+  inside your terminal to launch the app
   
   <b>STEP 1: Adding URLs</b><br>
   -Add sites to scrape.<br>
