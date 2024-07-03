@@ -50,8 +50,10 @@
   <li>os (used to get current working directory) ⚡</li>
 </ul>
 <hr>
+<h3>Video Demo:</h3>
+<a href="https://www.youtube.com/watch?v=2wB75X7samI">Here</a>
+<hr>
 <h3>How to use:</h3>
-(video demo will be coming soon)
 <p>
   <b>STEP 0: Install The App</b><br>
   -Clone this repository on your machine<br>
