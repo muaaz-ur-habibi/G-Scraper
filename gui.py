@@ -14,6 +14,8 @@ def hide_all_widgets():
     s_a_p_req_type.hide()
     s_a_p_button.hide()
     s_a_p_list.hide()
+    s_a_p_list_edit_button.hide()
+    s_a_p_list_delete_button.hide()
 
     e_t_s_label.hide()
     e_t_s_elem.hide()
@@ -22,6 +24,8 @@ def hide_all_widgets():
     e_t_s_for_site.hide()
     e_t_s_add_button.hide()
     e_t_s_list.hide()
+    e_t_s_list_edit_button.hide()
+    e_t_s_list_delete_button.hide()
 
     w_r_p_label.hide()
     w_r_p_site_label.hide()
@@ -50,6 +54,8 @@ def display_set_site_controls():
     s_a_p_label.show()
     s_a_p_button.show()
     s_a_p_list.show()
+    s_a_p_list_edit_button.show()
+    s_a_p_list_delete_button.show()
 
 def display_set_payloads_controls():
     hide_all_widgets()
@@ -74,6 +80,8 @@ def display_set_elements_to_scrape():
     e_t_s_for_site.show()
     e_t_s_add_button.show()
     e_t_s_list.show()
+    e_t_s_list_edit_button.show()
+    e_t_s_list_delete_button.show()
 
 def display_final_button():
     hide_all_widgets()
@@ -197,6 +205,26 @@ def add_to_list(which_list):
             payloads_list.append(payl_data)
 
             w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).upper()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
+
+def edit_url_list_item():
+    try:
+        selected_item_row = s_a_p_list.currentRow()
+        selected_item = s_a_p_list.item(selected_item_row).text()
+        value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected item:")
+    
+        site_list[selected_item_row]['url'] = value
+
+        splitted_url = str(selected_item).split("      ")
+        splitted_url[0] = value
+
+        s_a_p_list.item(selected_item_row).setText("      ".join(i for i in splitted_url))
+    except AttributeError:
+        alert.setText("Error")
+        alert.setInformativeText("Please select an item to edit")
+        alert.exec_()
+
+def edit_element_list_item():
+    pass
 
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
@@ -338,11 +366,24 @@ s_a_p_list = QListWidget(display_frame)
 s_a_p_list.setGeometry(10, 85, 294, 360)
 s_a_p_list.addItems(site_list)
 
+s_a_p_list_edit_button = QPushButton(display_frame)
+s_a_p_list_edit_button.setFixedSize(90, 30)
+s_a_p_list_edit_button.move(310, 100)
+s_a_p_list_edit_button.setText("Edit List Item")
+s_a_p_list_edit_button.clicked.connect(lambda: edit_url_list_item())
+
+s_a_p_list_delete_button = QPushButton(display_frame)
+s_a_p_list_delete_button.setFixedSize(90, 30)
+s_a_p_list_delete_button.move(310, 140)
+s_a_p_list_delete_button.setText("Delete List Item")
+
 s_a_p_label.hide()
 s_a_p.hide()
 s_a_p_req_type.hide()
 s_a_p_button.hide()
 s_a_p_list.hide()
+s_a_p_list_edit_button.hide()
+s_a_p_list_delete_button.hide()
 
 #---------------------------------------------------
 # set elements to scrape adding control panel widgets
@@ -382,6 +423,16 @@ e_t_s_for_site.addItem('Select site this element belongs to')
 e_t_s_list = QListWidget(display_frame)
 e_t_s_list.setGeometry(10, 115, 380, 350)
 
+e_t_s_list_edit_button = QPushButton(display_frame)
+e_t_s_list_edit_button.setFixedSize(90, 30)
+e_t_s_list_edit_button.move(390, 130)
+e_t_s_list_edit_button.setText("Edit List Item")
+
+e_t_s_list_delete_button = QPushButton(display_frame)
+e_t_s_list_delete_button.setFixedSize(90, 30)
+e_t_s_list_delete_button.move(390, 170)
+e_t_s_list_delete_button.setText("Delete List Item")
+
 e_t_s_label.hide()
 e_t_s_elem.hide()
 e_t_s_attrs.hide()
@@ -389,6 +440,8 @@ e_t_s_attrs_values.hide()
 e_t_s_for_site.hide()
 e_t_s_add_button.hide()
 e_t_s_list.hide()
+e_t_s_list_edit_button.hide()
+e_t_s_list_delete_button.hide()
 
 #---------------------------------------------------
 # widgets for setting payloads or other web request parameters
@@ -508,6 +561,8 @@ alert_elements = QMessageBox()
 # alert for payloads
 alert_payload = QMessageBox()
 
+# universal list item editor dialogue box
+list_item_editor = QInputDialog
 
 
 # show the root widget

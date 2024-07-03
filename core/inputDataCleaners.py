@@ -23,7 +23,10 @@ def clean_input_payloads_list(payload_list:list):
                 }
 
             # Add the param and param value to the appropriate type
-            grouped_data_element_payload[site][entry_type][param] = str(param_value).replace('\n', '')
+            if entry_type != "files":
+                grouped_data_element_payload[site][entry_type][param] = str(param_value).replace('\n', '')
+            else:
+                grouped_data_element_payload[site][entry_type][param] = str(clean_files_data(file_path=param_value))
         else:
             if site not in grouped_data_element_payload:
                 grouped_data_element_payload[site] = {
@@ -36,6 +39,8 @@ def clean_input_payloads_list(payload_list:list):
 
     # Convert the grouped data into a list
     url_param_list = list(grouped_data_element_payload.values())
+
+    print(url_param_list)
 
     return url_param_list
 
@@ -58,3 +63,7 @@ def clean_input_elements_list(element_list:list, url_list:list):
     element_with_url_list = sorted(element_with_url_list, key=lambda x: [i['url'] for i in url_list].index(x['url']))
 
     return element_with_url_list
+
+def clean_files_data(file_path:str):
+    with open(file_path, 'rb') as file_reader:
+        return file_reader.read()
