@@ -25,9 +25,6 @@ def request_executor(url, params_list:dict, elems_list, req_type):
             # catch a connection error
             try:
                 start_time = datetime.datetime.now()
-                print(params_list['headers'])
-                #headers = params_list['headers']
-                
                 req = requ.get(url=url, headers=params_list['headers'], json=params_list['json'], data=params_list['payload'])
                 code = req.status_code
                 req = req.content
