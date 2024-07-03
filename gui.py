@@ -114,6 +114,9 @@ def reset_app():
     elements_list.clear()
     payloads_list.clear()
 
+    e_t_s_for_site.clear()
+    w_r_p_site.clear()
+
     display_set_site_controls()
     pass
 
