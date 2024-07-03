@@ -51,7 +51,7 @@
 </ul>
 <hr>
 <h3>How to use:</h3>
-(video demo will be coming soon)
+<a href="https://www.youtube.com/watch?v=2wB75X7samI">Video Demo</a>
 <p>
   <b>STEP 0: Install The App</b><br>
   -Clone this repository on your machine<br>
