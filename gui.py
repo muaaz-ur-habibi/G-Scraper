@@ -118,7 +118,6 @@ def reset_app():
     w_r_p_site.clear()
 
     display_set_site_controls()
-    pass
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 # functions that handle the data in the app
@@ -213,21 +212,39 @@ def edit_url_list_item():
     try:
         selected_item_row = s_a_p_list.currentRow()
         selected_item = s_a_p_list.item(selected_item_row).text()
-        value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected item:")
-    
-        site_list[selected_item_row]['url'] = value
+        value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected URL; seperate url and request type by using a '|' character like: http://www.somesite.com|GET. even if you wish to only change one aspect of the data, you must reenter the others as well")
 
-        splitted_url = str(selected_item).split("      ")
-        splitted_url[0] = value
+        if "|" in value:
 
-        s_a_p_list.item(selected_item_row).setText("      ".join(i for i in splitted_url))
+            site_list[selected_item_row]['url'] = value
+
+
+            splitted_url = str(selected_item).split("      ")
+            splitted_url[0] = value
+
+            s_a_p_list.item(selected_item_row).setText("      ".join(i for i in splitted_url))
+        else:
+            alert.setText("Error")
+            alert.setInformativeText("Please declare the '|' divider of url and request type")
+            alert.exec_()
     except AttributeError:
         alert.setText("Error")
         alert.setInformativeText("Please select an item to edit")
         alert.exec_()
 
 def edit_element_list_item():
-    pass
+    try:
+        selected_item_row = e_t_s_list.currentRow()
+        selected_item = e_t_s_list.item(selected_item_row).text()
+        value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected element; seperate name, attribute and attribute value by using semi-colons like \n name:attribute:attribute value. Even if you wish to only edit one aspect, you must reenter all the other values")
+
+        value = value.split(':')
+
+        print(elements_list[selected_item_row])
+    except AttributeError:
+        alert.setText("Error")
+        alert.setInformativeText("Please select an item to edit")
+        alert.exec_()
 
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
@@ -430,6 +447,7 @@ e_t_s_list_edit_button = QPushButton(display_frame)
 e_t_s_list_edit_button.setFixedSize(90, 30)
 e_t_s_list_edit_button.move(390, 130)
 e_t_s_list_edit_button.setText("Edit List Item")
+e_t_s_list_edit_button.clicked.connect(lambda: edit_element_list_item())
 
 e_t_s_list_delete_button = QPushButton(display_frame)
 e_t_s_list_delete_button.setFixedSize(90, 30)
