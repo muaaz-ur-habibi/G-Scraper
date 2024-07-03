@@ -87,7 +87,8 @@
   -Then you select the type. Currently, only FILE is not worked on, so it will probably throw an unexpected error.<br>
   -The rest work fine. (NOTE: IF YOU DONT WANT TO SEND ANY PARAMETERS YOU MUST SPECIFY SO BY SELECTING THE SITE YOU DONT WANT ANY PARAMETERS FOR AND SELECTING THE "NO PARAMETER" VALUE. LEAVE THE REST EMPTY AND ADD).<br>
   -After you have selected your parameter, specify its contents, then "ADD (+)"<br>
--Note: If you want to obtain the payload, headers, or any web parameter data, you can do so in the Networking tab of Dev Tools.<br><br>
+  -Note: If you want to obtain the payload, headers, or any web parameter data, you can do so in the Networking tab of Dev Tools.<br>
+  -Note 2: For sending files, more specifically images (currently only images are tested for files), just type the payload name then specify the complete path to the image file.<br><br>
 
   <b>STEP 4: Starting Scrape</b><br>
   -Once you have everything set, you can start the scrape by clicking on "Start Scraping".<br>
@@ -95,3 +96,9 @@
   -Note: If you havent specified any elements to scrape, app will give you a warning. If you forgot to, you can go back and specify them. Else you can just click on "Yes".<br><br>
 </p>
 <p>As of now, there really isnt a way to give verbose output to the user. So once you start the scrape, just wait for a few seconds and check the scraped data folder in the data folder. Alternatively, if you find nothing there, you can check the logs folder to see if any error had occured.</p>
+<h3>Updates:</h3>
+<h2>July 3, 2024</h2>
+<ul>
+  <li>URL editing is implemented, but not request type.</li>
+  <li>Images are supported in files payload, since only they have been tested so far</li>
+</ul>
