@@ -52,6 +52,7 @@
 <hr>
 <h3>How to use:</h3>
 <a href="https://www.youtube.com/watch?v=2wB75X7samI">Video Demo</a>
+<hr>
 <p>
   <b>STEP 0: Install The App</b><br>
   -Clone this repository on your machine<br>
