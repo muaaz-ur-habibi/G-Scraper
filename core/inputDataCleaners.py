@@ -40,8 +40,6 @@ def clean_input_payloads_list(payload_list:list):
     # Convert the grouped data into a list
     url_param_list = list(grouped_data_element_payload.values())
 
-    print(url_param_list)
-
     return url_param_list
 
 def clean_input_elements_list(element_list:list, url_list:list):
