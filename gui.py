@@ -115,7 +115,10 @@ def reset_app():
     payloads_list.clear()
 
     e_t_s_for_site.clear()
+    e_t_s_for_site.addItem("Select site this element belongs to")
+
     w_r_p_site.clear()
+    w_r_p_site.addItem('Select Site')
 
     display_set_site_controls()
 
@@ -211,18 +214,22 @@ def add_to_list(which_list):
 def edit_url_list_item():
     try:
         selected_item_row = s_a_p_list.currentRow()
-        selected_item = s_a_p_list.item(selected_item_row).text()
         value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected URL; seperate url and request type by using a '|' character like: http://www.somesite.com|GET. even if you wish to only change one aspect of the data, you must reenter the others as well")
 
         if "|" in value:
+            value = value.split('|')
 
-            site_list[selected_item_row]['url'] = value
+            site_list[selected_item_row]['url'] = value[0]
+            site_list[selected_item_row]['request type'] = value[1]
 
 
-            splitted_url = str(selected_item).split("      ")
-            splitted_url[0] = value
+            s_a_p_list.item(selected_item_row).setText("      ".join(i for i in value))
 
-            s_a_p_list.item(selected_item_row).setText("      ".join(i for i in splitted_url))
+            e_t_s_for_site.removeItem(selected_item_row+1)
+            e_t_s_for_site.addItem(value[0])
+
+            w_r_p_site.removeItem(selected_item_row+1)
+            w_r_p_site.addItem(value[0])
         else:
             alert.setText("Error")
             alert.setInformativeText("Please declare the '|' divider of url and request type")
@@ -235,12 +242,22 @@ def edit_url_list_item():
 def edit_element_list_item():
     try:
         selected_item_row = e_t_s_list.currentRow()
-        selected_item = e_t_s_list.item(selected_item_row).text()
+        #selected_item = e_t_s_list.item(selected_item_row).text()
         value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected element; seperate name, attribute and attribute value by using semi-colons like \n name:attribute:attribute value. Even if you wish to only edit one aspect, you must reenter all the other values")
 
-        value = value.split(':')
+        if ":" in value:
+            value = value.split(':')
 
-        print(elements_list[selected_item_row])
+            elements_list[selected_item_row]['name'] = value[0]
+            elements_list[selected_item_row]['attribute'] = value[1]
+            elements_list[selected_item_row]['attribute value'] = value[2]
+
+            
+            e_t_s_list.item(selected_item_row).setText(f"{elements_list[selected_item_row]['name']}: {elements_list[selected_item_row]['attribute']}->{elements_list[selected_item_row]['attribute value']} FOR {elements_list[selected_item_row]['for site']}")
+        else:
+            alert.setText("Error")
+            alert.setInformativeText("Please declare the ':' divider of the element name, attribute and attribute value")
+            alert.exec_()
     except AttributeError:
         alert.setText("Error")
         alert.setInformativeText("Please select an item to edit")
@@ -266,6 +283,7 @@ def get_elem_error_response(i):
 # the function that actually starts the scraping
 def start_scrape():
     r = run(url_list=site_list, element_list=elements_list, payload_list=payloads_list)
+
     # handle the case where no urls are added. what are they trying to scrape?
     if r == 'show nan_url error':
         alert_url.setText('Error')

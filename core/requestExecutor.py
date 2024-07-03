@@ -212,8 +212,11 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  elements={x['name']}  parameters={params_list}\n")
                             except AttributeError:
                                 error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error=f'{i} was not found on the webpage', request_type=req_type)
-                    
-                element_logger(elements_logs_list=elems_logging_list)
+                
+                if elems_logging_list != []:
+                    element_logger(elements_logs_list=elems_logging_list)
+                else:
+                    pass
 
                         #finish_time = datetime.datetime.now()
                         #diff = finish_time - start_time

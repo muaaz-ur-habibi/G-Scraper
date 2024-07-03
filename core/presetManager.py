@@ -11,9 +11,9 @@ def create_preset(preset_name:str, url:str, elements:list, payloads:list):
     
 
     #c.execute(f"""CREATE TABLE {preset_name} 
-    #          (url VARCHAR(1000))
-    #          element VARCHAR(600)
-    #          payload VARCHAR(700)
+    #          (url VARCHAR(1500))
+    #          element VARCHAR(700)
+    #          payload VARCHAR(2000)
     #          """)
 
 
