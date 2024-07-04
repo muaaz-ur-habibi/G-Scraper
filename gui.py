@@ -35,6 +35,7 @@ def hide_all_widgets():
     w_r_p_add_param.hide()
     w_r_p_add_param_value.hide()
     w_r_p_list.hide()
+    w_r_p_list_edit.hide()
     w_r_p_add_button.hide()
 
     ask.hide()
@@ -68,6 +69,7 @@ def display_set_payloads_controls():
     w_r_p_add_param.show()
     w_r_p_add_param_value.show()
     w_r_p_list.show()
+    w_r_p_list_edit.show()
     w_r_p_add_button.show()
 
 def display_set_elements_to_scrape():
@@ -211,16 +213,20 @@ def add_to_list(which_list):
 
             w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).upper()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
 
+
+
+# functions to edit the added list of items, example you want to change a request type of a URL, change an attribute of an element etc
 def edit_url_list_item():
-    try:
-        selected_item_row = s_a_p_list.currentRow()
+    #try:
+    selected_item_row = s_a_p_list.currentRow()
+    if selected_item_row != -1:
         value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected URL; seperate url and request type by using a '|' character like: http://www.somesite.com|GET. even if you wish to only change one aspect of the data, you must reenter the others as well")
 
         if "|" in value:
             value = value.split('|')
 
             site_list[selected_item_row]['url'] = value[0]
-            site_list[selected_item_row]['request type'] = value[1]
+            site_list[selected_item_row]['request type'] = value[1].upper()
 
 
             s_a_p_list.item(selected_item_row).setText("      ".join(i for i in value))
@@ -234,16 +240,21 @@ def edit_url_list_item():
             alert.setText("Error")
             alert.setInformativeText("Please declare the '|' divider of url and request type")
             alert.exec_()
-    except AttributeError:
+    
+    else:
+
+    #except AttributeError:
         alert.setText("Error")
         alert.setInformativeText("Please select an item to edit")
         alert.exec_()
 
+
+
 def edit_element_list_item():
-    try:
+    #try:
         selected_item_row = e_t_s_list.currentRow()
         #selected_item = e_t_s_list.item(selected_item_row).text()
-        value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected element; seperate name, attribute and attribute value by using semi-colons like \n name:attribute:attribute value. Even if you wish to only edit one aspect, you must reenter all the other values")
+        value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected element; seperate name, attribute and attribute value by using colons like name:attribute:attribute value:for_site. Even if you wish to only edit one aspect, you must reenter all the other values")
 
         if ":" in value:
             value = value.split(':')
@@ -251,17 +262,46 @@ def edit_element_list_item():
             elements_list[selected_item_row]['name'] = value[0]
             elements_list[selected_item_row]['attribute'] = value[1]
             elements_list[selected_item_row]['attribute value'] = value[2]
+            elements_list[selected_item_row]['for site'] = value[3]
 
             
             e_t_s_list.item(selected_item_row).setText(f"{elements_list[selected_item_row]['name']}: {elements_list[selected_item_row]['attribute']}->{elements_list[selected_item_row]['attribute value']} FOR {elements_list[selected_item_row]['for site']}")
         else:
             alert.setText("Error")
-            alert.setInformativeText("Please declare the ':' divider of the element name, attribute and attribute value")
+            alert.setInformativeText("Please declare the ':' divider of the element name, attribute, attribute value and the site it belongs to")
             alert.exec_()
-    except AttributeError:
-        alert.setText("Error")
-        alert.setInformativeText("Please select an item to edit")
-        alert.exec_()
+    #except AttributeError:
+        #alert.setText("Error")
+        #alert.setInformativeText("Please select an item to edit")
+        #alert.exec_()
+
+
+
+def edit_parameter_list_item():
+    #try:
+        selected_item_row = w_r_p_list.currentRow()
+        print(selected_item_row)
+
+        value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected payload; seperate the key and value by using the | seperator like so: type|key|value|for_site. Even if you want to change only one thing, you must reenter the other as well.")
+
+        if '|' in value:
+            value = value.split("|")
+
+            payloads_list[selected_item_row]['type'] = value[0].capitalize()
+            payloads_list[selected_item_row]['param'] = value[1]
+            payloads_list[selected_item_row]['param value'] = value[2]
+            payloads_list[selected_item_row]['for site'] = value[3]
+
+            w_r_p_list.item(selected_item_row).setText(f"{str(payloads_list[selected_item_row]['type']).upper()}: {payloads_list[selected_item_row]['param']}->{payloads_list[selected_item_row]['param value']} FOR {payloads_list[selected_item_row]['for site']}")
+        else:
+            alert.setText("Error")
+            alert.setInformativeText("Please declare the '|' divider of the parameter type, key, value and the site it goes with")
+            alert.exec_()
+    #except AttributeError:
+        #alert.setText("Error")
+        #alert.setInformativeText("Please select an item to edit")
+        #alert.exec_()
+
 
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
@@ -278,6 +318,7 @@ def get_elem_error_response(i):
             print(f'The output has been recieved\n\n{r}')
     elif i.text() == '&No':
         display_set_elements_to_scrape()
+
 
 
 # the function that actually starts the scraping
@@ -306,7 +347,7 @@ def start_scrape():
     elif isinstance(r, list):
         pass
 
-    
+
     # handling the case where a post request is trying to be sent without any payloads/web parameters. What are they trying to POST?
     if r == 'show post_without_payload error':
         alert_payload.setText('Error')
@@ -530,7 +571,12 @@ w_r_p_add_button.clicked.connect(lambda: add_to_list('payload'))
 
 w_r_p_list = QListWidget(display_frame)
 w_r_p_list.setGeometry(10, 155, 380, 300)
-w_r_p_list.hide()
+
+w_r_p_list_edit = QPushButton(display_frame)
+w_r_p_list_edit.setFixedSize(80, 30)
+w_r_p_list_edit.setText("Edit List Item")
+w_r_p_list_edit.move(390, 170)
+w_r_p_list_edit.clicked.connect(lambda: edit_parameter_list_item())
 
 w_r_p_label.hide()
 w_r_p_site_label.hide()
@@ -540,6 +586,8 @@ w_r_p_select.hide()
 w_r_p_add_param.hide()
 w_r_p_add_param_value.hide()
 w_r_p_add_button.hide()
+w_r_p_list.hide()
+w_r_p_list_edit.hide()
 
 #---------------------------------------------------
 # wigdets to confirm to start scrape after showing the scrape data

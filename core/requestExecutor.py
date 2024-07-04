@@ -68,19 +68,31 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     elems_logging_list = []
 
                     for x in elems:
-                        element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
-                        # handling the case where no elements were found
-                        if element_scraped == []:
-                            error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'Element {x} was not found', request_type=req_type)
+                        # to scrape the links, the user has to specify only 'a' in the name field
+                        if x['name'] != "a":
+                            element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
+                            # handling the case where no elements were found
+                            if element_scraped == []:
+                                error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'Element {x} was not found', request_type=req_type)
+                            else:
+                                for i in element_scraped:
+                                    # handling html tags not found errors.
+                                    try:
+                                        f_a.write(f'{str(i.text).strip()}\n')
+                                        elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  elements={x['name']}  parameters={params_list}\n")
+                                    except AttributeError:
+                                        error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error=f'{i} was not found on the webpage', request_type=req_type)
+                        # scraping the links ONLY
                         else:
-                            for i in element_scraped:
-                                # handling html tags not found errors.
-                                try:
-                                    f_a.write(f'{str(i.text).strip()}\n')
-                                    elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  elements={x['name']}  parameters={params_list}\n")
-                                except AttributeError:
-                                    error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error=f'{i} was not found on the webpage', request_type=req_type)
-                
+                            links_scraped = page_soup.find_all("a", {x['attribute']: x['attribute value']})
+
+                            if links_scraped == []:
+                                error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'No links found in {url}', request_type=req_type)
+                            else:
+                                for i in links_scraped:
+                                    f_a.write(f'{str(i.get('href'))}\n')
+                                    elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
+
                 if elems_logging_list != []:
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
@@ -133,19 +145,31 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     elems_logging_list = []
 
                     for x in elems:
-                        element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
-                        # handling the case where no elements were found
-                        if element_scraped == []:
-                            error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'Element {x} was not found', request_type=req_type)
+                        # to scrape the links, the user has to specify only 'a' in the name field
+                        if x['name'] != "a":
+                            element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
+                            # handling the case where no elements were found
+                            if element_scraped == []:
+                                error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'Element {x} was not found', request_type=req_type)
+                            else:
+                                for i in element_scraped:
+                                    # handling html tags not found errors.
+                                    try:
+                                        f_a.write(f'{str(i.text).strip()}\n')
+                                        elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  elements={x['name']}  parameters={params_list}\n")
+                                    except AttributeError:
+                                        error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error=f'{i} was not found on the webpage', request_type=req_type)
+                        # scraping the links ONLY
                         else:
-                            for i in element_scraped:
-                                # handling html tags not found errors.
-                                try:
-                                    f_a.write(f'{str(i.text).strip()}\n')
-                                    elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  elements={x['name']}  parameters={params_list}\n")
-                                except AttributeError:
-                                    error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error=f'{i} was not found on the webpage', request_type=req_type)
-                
+                            links_scraped = page_soup.find_all("a", {x['attribute']: x['attribute value']})
+
+                            if links_scraped == []:
+                                error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'No links found in {url}', request_type=req_type)
+                            else:
+                                for i in links_scraped:
+                                    f_a.write(f'{str(i.get('href'))}\n')
+                                    elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
+
                 if elems_logging_list != []:
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
@@ -190,7 +214,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
                 # return the output for a user on the GUI
                 #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'POST', code, 'pagical scrape']
-                
+
         else:
             elems = elems_list['elements']
             save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt'
@@ -200,18 +224,30 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 elems_logging_list = []
 
                 for x in elems:
-                    element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
-                    # handling the case where no elements were found
-                    if element_scraped == []:
-                        error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'Element {x} was not found', request_type=req_type)
-                    else:
-                        for i in element_scraped:
-                            # handling html tags not found errors.
-                            try:
-                                f_a.write(f'{str(i.text).strip()}\n')
-                                elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  elements={x['name']}  parameters={params_list}\n")
-                            except AttributeError:
-                                error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error=f'{i} was not found on the webpage', request_type=req_type)
+                        # to scrape the links, the user has to specify only 'a' in the name field
+                        if x['name'] != "a":
+                            element_scraped = page_soup.find_all(x['name'], {x['attribute']: x['attribute value']})
+                            # handling the case where no elements were found
+                            if element_scraped == []:
+                                error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'Element {x} was not found', request_type=req_type)
+                            else:
+                                for i in element_scraped:
+                                    # handling html tags not found errors.
+                                    try:
+                                        f_a.write(f'{str(i.text).strip()}\n')
+                                        elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  elements={x['name']}  parameters={params_list}\n")
+                                    except AttributeError:
+                                        error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error=f'{i} was not found on the webpage', request_type=req_type)
+                        # scraping the links ONLY
+                        else:
+                            links_scraped = page_soup.find_all("a", {x['attribute']: x['attribute value']})
+
+                            if links_scraped == []:
+                                error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'No links found in {url}', request_type=req_type)
+                            else:
+                                for i in links_scraped:
+                                    f_a.write(f'{str(i.get('href'))}\n')
+                                    elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
                 
                 if elems_logging_list != []:
                     element_logger(elements_logs_list=elems_logging_list)
