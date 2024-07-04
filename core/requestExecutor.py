@@ -92,7 +92,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 for i in links_scraped:
                                     f_a.write(f'{str(i.get('href'))}\n')
                                     elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
-
+                # if the logs of elements isnt empty, log an element log. else just do nothing
                 if elems_logging_list != []:
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
@@ -169,7 +169,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 for i in links_scraped:
                                     f_a.write(f'{str(i.get('href'))}\n')
                                     elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
-
+                # if the logs of elements isnt empty, log an element log. else just do nothing
                 if elems_logging_list != []:
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
@@ -195,11 +195,14 @@ def request_executor(url, params_list:dict, elems_list, req_type):
             # return the output for a user on the GUI
             # return [str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'Connection Error', 'GET', '-', 'error scrape']
 
+        # soupify then prettify the webpage
         page_soup = bs(req, features='html.parser')
         scraped_page = page_soup.prettify()
 
+        # get the current working directory
         curr_dir = os.getcwd()
 
+        # check if there are any elements to be scraped
         if elems_list == []:
             save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-web_scraped.txt'
 
@@ -219,7 +222,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
             elems = elems_list['elements']
             save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt'
 
-                # open the save file and assign it a unique name
+            # open the save file and assign it a unique name
             with open(save_path, 'a', errors='ignore') as f_a:
                 elems_logging_list = []
 
@@ -248,7 +251,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 for i in links_scraped:
                                     f_a.write(f'{str(i.get('href'))}\n')
                                     elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
-                
+                # if the logs of elements isnt empty, log an element log. else just do nothing
                 if elems_logging_list != []:
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
