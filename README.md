@@ -80,7 +80,8 @@
   -So if you want to scrape a div with class of text-box, in the HTML of the webpage it would look like: div class="text-box". Here, "div" is the element name, "class" is the element attribute, "text-box" is the attribute value.<br>
   -Once you have entered the element, you must then select the URL/site this element belongs to from the URLs you added in the previous step.<br>
   -Finally click on the "+" button and its added. Note: if there are multiple elements with the same properties you specified, the script will scrape all their data. Note 2: it is possible you to only specify the element name, nothing else; this will scrape all the elements of that tag<br>
--Note: In order to obtain the necessary info about an element, you will have to inspect it. Just right click on the element, select 'Inspect' then you will be presented with the HTML of the element. Use the info in the HTML to scrape it<br><br>
+-Note: In order to obtain the necessary info about an element, you will have to inspect it. Just right click on the element, select 'Inspect' then you will be presented with the HTML of the element. Use the info in the HTML to scrape it<br>
+-Note 2: If you have specified an a tag a.k.a a link tag to be scraped, it wont scrape the text it has, rather the link/href value of it. You can override this by going into 'requestExecutor.py' and finding the part where if says 'if x['name'] == 'a' then just comment out the else part, and the a tag's text will be scraped<br>
 
   <b>STEP 3: Specifying Request Parameters</b><br>
   -Add the web request parameters/payloads to send with your request.<br>
@@ -103,4 +104,8 @@
 <ul>
   <li>URL editing is implemented, but not request type.</li>
   <li>Images are supported in files payload, since only they have been tested so far</li>
+</ul>
+<h2>July 4, 2024</h2>
+<ul>
+  <li>Added functionality to scrape the links of a tags</li>
 </ul>
