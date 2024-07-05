@@ -110,6 +110,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 req = req.content
             except ConnectionError:
                 error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error='Connection Error', request_type=req_type)
+
             except HTTPError:
                 error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error='Site not found Error', request_type=req_type)
                 # return the output for a user on the GUI
@@ -169,6 +170,8 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 for i in links_scraped:
                                     f_a.write(f'{str(i.get('href'))}\n')
                                     elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
+
+                
                 # if the logs of elements isnt empty, log an element log. else just do nothing
                 if elems_logging_list != []:
                     element_logger(elements_logs_list=elems_logging_list)

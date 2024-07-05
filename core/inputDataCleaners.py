@@ -62,6 +62,7 @@ def clean_input_elements_list(element_list:list, url_list:list):
 
     return element_with_url_list
 
+# return the binaries of the file to be sent in the payload
 def clean_files_data(file_path:str):
     with open(file_path, 'rb') as file_reader:
         return file_reader.read()

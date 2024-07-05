@@ -441,8 +441,6 @@ reset_app_data.setFixedSize(170, 50)
 reset_app_data.clicked.connect(lambda: reset_app())
 
 
-
-
 #---------------------------------------------------
 # set site adding control panel widgets
 s_a_p_label = QLabel(display_frame)
