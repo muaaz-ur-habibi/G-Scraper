@@ -28,6 +28,7 @@
   <li>✅ Handles all types of errors</li>
   <li>✅ Request function runs in a seperate thread than GUI so you can do things while your request is being run</li>
   <li>✅ Functionality to edit the variables once they have been added</li>
+  <li>❌ All errors can be handled, logged and shown to the user</li>
   <li>❌ Can delete an unwanted item from the list of added variables</li>
   <li>✅ Can reset the entire app to start brand new after a scrape/set of scrapes</li>
   <li>❌ Provides verbose output to user in the GUI</li>
