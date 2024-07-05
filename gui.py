@@ -38,6 +38,14 @@ def hide_all_widgets():
     w_r_p_list_edit.hide()
     w_r_p_add_button.hide()
 
+    p_s_r_label.hide()
+    p_s_r_create_label.hide()
+    p_s_r_create_button.hide()
+    p_s_r_load_label.hide()
+    p_s_r_load_button.hide()
+    p_s_r_load_list.hide()
+    p_s_r_load_into_run_button.hide()
+
     ask.hide()
     show_site_list_l.hide()
     show_site_list.hide()
@@ -85,6 +93,17 @@ def display_set_elements_to_scrape():
     e_t_s_list_edit_button.show()
     e_t_s_list_delete_button.show()
 
+def display_presets_controls():
+    hide_all_widgets()
+
+    p_s_r_label.show()
+    p_s_r_create_label.show()
+    p_s_r_create_button.show()
+    p_s_r_load_label.show()
+    p_s_r_load_button.show()
+    p_s_r_load_list.show()
+    p_s_r_load_into_run_button.show()
+
 def display_final_button():
     hide_all_widgets()
 
@@ -124,7 +143,7 @@ def reset_app():
 
     display_set_site_controls()
 
-#------------------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 # functions that handle the data in the app
 
 # generic function that adds data to the lists. currently no function to remove
@@ -401,18 +420,27 @@ payload_setting_show_button.move(10, 160)
 payload_setting_show_button.setText("Set Payloads or\nHeaders for scrape")
 payload_setting_show_button.clicked.connect(lambda: display_set_payloads_controls())
 
+preset_manager_show_button = QPushButton(control_frame)
+preset_manager_show_button.setFixedSize(170, 50)
+preset_manager_show_button.move(10, 220)
+preset_manager_show_button.setText("Set/Run Presets")
+preset_manager_show_button.clicked.connect(lambda: display_presets_controls())
+
+# final display and confirm the user wants to start scrape
 final_send_button = QPushButton(control_frame)
 final_send_button.setFixedSize(170, 50)
-final_send_button.move(10, 220)
+final_send_button.move(10, 280)
 final_send_button.setText("Start Scraping")
 final_send_button.clicked.connect(lambda: display_final_button())
 
 # A button to reset the app's data
 reset_app_data = QPushButton(control_frame)
 reset_app_data.setText("Reset App Data")
-reset_app_data.move(10, 280)
+reset_app_data.move(10, 340)
 reset_app_data.setFixedSize(170, 50)
 reset_app_data.clicked.connect(lambda: reset_app())
+
+
 
 
 #---------------------------------------------------
@@ -588,6 +616,51 @@ w_r_p_add_param_value.hide()
 w_r_p_add_button.hide()
 w_r_p_list.hide()
 w_r_p_list_edit.hide()
+
+#---------------------------------------------------------
+# widgets for the preset setting/loading and running
+p_s_r_label = QLabel(display_frame)
+p_s_r_label.setText("Set/Run Presets")
+p_s_r_label.move(10, 30)
+p_s_r_label.setFont(QFont('Segoe UI', 13))
+
+p_s_r_create_label = QLabel(display_frame)
+p_s_r_create_label.setText("Create a Preset\n(Presets are created from the data you have entered\nabove in the previous fields)")
+p_s_r_create_label.move(10, 70)
+p_s_r_create_label.setFont(QFont('Segoe UI', 10))
+
+p_s_r_create_button = QPushButton(display_frame)
+p_s_r_create_button.setText("Create a preset")
+p_s_r_create_button.setFixedWidth(100)
+p_s_r_create_button.move(10, 130)
+
+p_s_r_load_label = QLabel(display_frame)
+p_s_r_load_label.setText("Load a preset\n(This will load the selected preset's data, and override\nany data you have entered above. To run this preset\nsimply run the scrape like you would normally)")
+p_s_r_load_label.move(10, 180)
+p_s_r_load_label.setFont(QFont('Segoe UI', 10))
+
+# this button loads the presets from the database
+p_s_r_load_button = QPushButton(display_frame)
+p_s_r_load_button.setText("Load presets\nfrom database")
+p_s_r_load_button.move(370, 260)
+p_s_r_load_button.setFixedWidth(80)
+
+p_s_r_load_list = QListWidget(display_frame)
+p_s_r_load_list.setGeometry(10, 260, 350, 200)
+
+# this button loads the presets into the required fields
+p_s_r_load_into_run_button = QPushButton(display_frame)
+p_s_r_load_into_run_button.setText("Load this\npreset")
+p_s_r_load_into_run_button.move(370, 300)
+p_s_r_load_into_run_button.setFixedWidth(80)
+
+p_s_r_label.hide()
+p_s_r_create_label.hide()
+p_s_r_create_button.hide()
+p_s_r_load_label.hide()
+p_s_r_load_button.hide()
+p_s_r_load_list.hide()
+p_s_r_load_into_run_button.hide()
 
 #---------------------------------------------------
 # wigdets to confirm to start scrape after showing the scrape data

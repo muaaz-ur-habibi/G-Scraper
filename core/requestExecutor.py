@@ -97,7 +97,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
                     pass
-                            
+
                             # return the output for a user on the GUI
                             #return [diff.total_seconds(),  url, f"{x['name']}:::{x['attribute']}:::{x['attribute value']}", v_o_params_list, 'no errors', 'GET', code, 'elemental scrape']
 
