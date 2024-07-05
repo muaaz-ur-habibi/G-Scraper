@@ -2,7 +2,11 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+# import the function that runs all the other main scraping functions
 from core.runner import run
+
+# import the preset functions
+from core.presetManager import create_preset
 
 
 # functions that show/hide certain widgets based on menu option user pressed
@@ -145,6 +149,22 @@ def reset_app():
 
 #------------------------------------------------------------------------------------------
 # functions that handle the data in the app
+
+# function that creates a preset
+def create_preset_():
+    if len(site_list) == 0:
+        alert.setText("Error")
+        alert.setInformativeText("Enter data to be presetted")
+        alert.exec_()
+    else:
+        if len(site_list) > 1:
+            alert.setText("Warning")
+            alert.setInformativeText("More than one URLs detected trying to be added into a preset. PRESETTING ONLY WORKS WITH ONE URL AT A TIME.")
+            alert.exec_()
+        else:
+            name, _ = preset_name_asker.getText(display_frame, "Preset Name?", "Enter the name of the Preset.")
+            print(name)
+            #create_preset()
 
 # generic function that adds data to the lists. currently no function to remove
 def add_to_list(which_list):
@@ -631,6 +651,7 @@ p_s_r_create_button = QPushButton(display_frame)
 p_s_r_create_button.setText("Create a preset")
 p_s_r_create_button.setFixedWidth(100)
 p_s_r_create_button.move(10, 130)
+p_s_r_create_button.clicked.connect(lambda: create_preset_())
 
 p_s_r_load_label = QLabel(display_frame)
 p_s_r_load_label.setText("Load a preset\n(This will load the selected preset's data, and override\nany data you have entered above. To run this preset\nsimply run the scrape like you would normally)")
@@ -722,6 +743,8 @@ alert_payload = QMessageBox()
 # universal list item editor dialogue box
 list_item_editor = QInputDialog
 
+# preset name input box
+preset_name_asker = QInputDialog
 
 # show the root widget
 root.show()
