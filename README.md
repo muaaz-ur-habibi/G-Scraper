@@ -112,3 +112,9 @@
 <ul>
   <li>Added functionality to scrape the links of a tags</li>
 </ul>
+<h2>July 5, 2024</h2>
+<ul>
+  <li>Fixed some code mess</li>
+  <li>Started working on preset adding function</li>
+  <li>Finished the preset GUI elements</li>
+</ul>
