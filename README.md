@@ -116,5 +116,10 @@
 <ul>
   <li>Fixed some code mess</li>
   <li>Started working on preset adding function</li>
-  <li>Finished the preset GUI elements</li>
+  <li>Finished the presetting GUI elements</li>
+</ul>
+<h2>July 7, 2024</h2>
+<ul>
+  <li>Completed the basic presetting functionality, i.e being able to take, clean and process all the necessary data</li>
+  <li>Also added some ifs and elses so that presetting now also can support webpage scraping</li>
 </ul>
