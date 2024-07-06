@@ -24,6 +24,15 @@ def create_preset(preset_name:str,
     db = sqlite3.connect(f"{cur_dir}\\data\\presets\\presets.db")
     c = db.cursor()
 
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS Presets (
+              preset_name VARCHAR,
+              url VARCHAR,
+              request_type CHAR(100),
+              elements VARCHAR,
+              parameters VARCHAR)
+    """)
+
     if elements != []:
         cleaned_elements_list = clean_input_elements_list(element_list=elements, url_list=url_list)
     else:
@@ -40,27 +49,62 @@ def create_preset(preset_name:str,
     if cleaned_elements_list != "NaN":
         for item in cleaned_elements_list:
             url = item['url']
+            req_type = url_list[0]['request type']
             elems = item['elements']
             elems = [f"{i['name']}|{i['attribute']}|{i['attribute value']}" for i in elems]
 
-            print(preset_name)
-            print(url)
-            print(elems)
-            print(cleaned_parameters_list)
+            # concatenate all the list items, so that it fits into one row
+            elems = "/|\\".join(i for i in elems)
+
+            cleaned_parameters_list = "///".join(i for i in cleaned_parameters_list)
+
+            #print(preset_name)
+            #print(url)
+            #print(req_type)
+            #print(elems)
+            #print(cleaned_parameters_list)
+
+            c.execute(f"""INSERT INTO Presets VALUES ('{preset_name}', '{url}', '{req_type}', '{elems}', '{cleaned_parameters_list}')""")
+
+            print(c.execute("""SELECT * FROM Presets""").fetchall())
+
+            db.commit()
+            db.close()
+    # else just set the elements to Null
     else:
         url = url_list[0]['url']
+        req_type = url_list[0]['request type']
         elems = "Null"
 
-        print(preset_name)
-        print(url)
-        print(elems)
-        print(cleaned_parameters_list)
-    
+        # concatenate all the list items, so that it fits into one row
+        cleaned_parameters_list = "///".join(i for i in cleaned_parameters_list)
+
+        #print(preset_name)
+        #print(url)
+        #print(req_type)
+        #print(elems)
+        #print(cleaned_parameters_list)
+
+        c.execute(f"""INSERT INTO Presets VALUES ('{preset_name}', '{url}', '{req_type}', '{elems}', '{cleaned_parameters_list}')""")
+
+        print(c.execute("""SELECT * FROM Presets""").fetchall())
+
+        db.commit()
+        db.close()
+
 
 def load_preset(preset_name:str):
     pass
 
+def test():
+    cur_dir = os.getcwd().replace('\\core', '')
 
+    db = sqlite3.connect(f"{cur_dir}\\data\\presets\\presets.db")
+    c = db.cursor()
+
+    print(c.execute("""SELECT * FROM Presets""").fetchall())
+
+test()
 #create_preset(preset_name='muaaz_k',
 #              url_list=[{'url': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/', 'request type': 'GET'}],
 #              elements=[{'name': 'code', 'attribute': 'class', 'attribute value': 'codeBlockLines_e6Vv', 'for site': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/'}, {'name': 'h3', 'attribute': 'class', 'attribute value': 'anchor anchorWithStickyNavbar_LWe7', 'for site': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/'}],
