@@ -152,19 +152,24 @@ def reset_app():
 
 # function that creates a preset
 def create_preset_():
+    # checks if the site list is 0; what preset is user tryna create?
     if len(site_list) == 0:
         alert.setText("Error")
         alert.setInformativeText("Enter data to be presetted")
         alert.exec_()
+    # then if it is greater than one; only one URL at a time
+    elif len(site_list) > 1:
+        alert.setText("Warning")
+        alert.setInformativeText("More than one URLs detected trying to be added into a preset. PRESETTING ONLY WORKS WITH ONE URL AT A TIME.")
+        alert.exec_()
     else:
-        if len(site_list) > 1:
-            alert.setText("Warning")
-            alert.setInformativeText("More than one URLs detected trying to be added into a preset. PRESETTING ONLY WORKS WITH ONE URL AT A TIME.")
-            alert.exec_()
-        else:
-            name, _ = preset_name_asker.getText(display_frame, "Preset Name?", "Enter the name of the Preset.")
-            print(name)
-            #create_preset()
+        name, _ = preset_name_asker.getText(display_frame, "Preset Name?", "Enter the name of the Preset.")
+        create_preset(
+            preset_name=name,
+            url_list=site_list,
+            elements=elements_list,
+            payloads=payloads_list
+        )
 
 # generic function that adds data to the lists. currently no function to remove
 def add_to_list(which_list):
@@ -288,7 +293,6 @@ def edit_url_list_item():
         alert.exec_()
 
 
-
 def edit_element_list_item():
     #try:
         selected_item_row = e_t_s_list.currentRow()
@@ -313,7 +317,6 @@ def edit_element_list_item():
         #alert.setText("Error")
         #alert.setInformativeText("Please select an item to edit")
         #alert.exec_()
-
 
 
 def edit_parameter_list_item():
@@ -341,7 +344,28 @@ def edit_parameter_list_item():
         #alert.setInformativeText("Please select an item to edit")
         #alert.exec_()
 
+# function to delete the list items from any of the 3 lists
+def delete_list_item(which_list:str):
+    if which_list == 'site':
+        curr_i = s_a_p_list.currentRow()
+        i = s_a_p_list.takeItem(curr_i)
+        i = i.text()
+        i = i.split("      ")
+        i = {"url": i[0], "request type": i[1]}
+        site_list.remove(i)
 
+    # element one is truly confusing
+    elif which_list == 'element':
+        curr_i = e_t_s_list.currentRow()
+        i = e_t_s_list.takeItem(curr_i)
+        i = i.text()
+        i = i.split(": ")
+        i[1] = i[1].split("->")
+        i[1][1] = i[1][1].split(" FOR ")
+        i = {'name': i[0], 'attribute': i[1][0], 'attribute value': i[1][1][0], 'for site': i[1][1][1]}
+        # commented out this print statement, which shows why there are so many lists
+        #print(i)
+        elements_list.remove(i)
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
 def get_elem_error_response(i):
@@ -501,6 +525,7 @@ s_a_p_list_delete_button = QPushButton(display_frame)
 s_a_p_list_delete_button.setFixedSize(90, 30)
 s_a_p_list_delete_button.move(310, 140)
 s_a_p_list_delete_button.setText("Delete List Item")
+s_a_p_list_delete_button.clicked.connect(lambda: delete_list_item(which_list='site'))
 
 s_a_p_label.hide()
 s_a_p.hide()
@@ -558,6 +583,7 @@ e_t_s_list_delete_button = QPushButton(display_frame)
 e_t_s_list_delete_button.setFixedSize(90, 30)
 e_t_s_list_delete_button.move(390, 170)
 e_t_s_list_delete_button.setText("Delete List Item")
+e_t_s_list_delete_button.clicked.connect(lambda: delete_list_item(which_list='element'))
 
 e_t_s_label.hide()
 e_t_s_elem.hide()
