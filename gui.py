@@ -6,7 +6,7 @@ from PyQt5.QtCore import *
 from core.runner import run
 
 # import the preset functions
-from core.presetManager import create_preset
+from core.presetManager import create_preset, load_preset, load_all_presets, inverse_of_web_parameter_formatting
 
 
 # functions that show/hide certain widgets based on menu option user pressed
@@ -171,6 +171,77 @@ def create_preset_():
             payloads=payloads_list
         )
 
+# this function first checks if a table is present, if it isnt it asks the user to create one (by creating a preset) 
+# if there is one, it then gets all the necessary data and adds it to the list
+def loading_all_the_presets():
+    c = load_all_presets()
+
+    if c == "Table doesnt exist":
+        alert.setText("Error")
+        alert.setInformativeText("Table in the database doesnt exist. Most likely means that no presets actually exist. Create a preset first")
+        alert.exec_()
+    else:
+        list_of_presets = []
+        for i in c:
+            name = i[0]
+            site = i[1]
+            req_type = i[2]
+            if "/|\\" in i[3]:
+                elements = str(i[3]).split("/|\\")
+                elements = [i.split("|") for i in elements]
+            else:
+                elements = str(i[3]).split("|")
+            
+            if "///" in i[4]:
+                parameters = str(i[4]).split("///")
+                parameters = [i.split("|||") for i in parameters]
+            else:
+                parameters = str(i[4]).split("|||")
+
+            #list_of_presets.append([name, site, req_type])
+    
+            p_s_r_load_list.addItem(f"{name}: {req_type}  TO   {site}  scraping the elements {elements}     with request parameters   {parameters}")
+
+# this function first gets the selected preset from the list, then sql queries it with the db to find the match,
+# then cleans and formats the parameters back to how they were, then adds them to the lists
+def load_preset_into_fields():
+    preset_to_load = p_s_r_load_list.currentItem().text()
+    preset_to_load = load_preset(preset_name=preset_to_load.split(':')[0])
+
+    # clear all the lists to prepare them for this sole scrape
+    site_list.clear()
+    elements_list.clear()
+    payloads_list.clear()
+
+    # add the site to the list
+    site_list.append({'url': preset_to_load[1], 'request type': preset_to_load[2]})
+
+    # add the elements to the list
+    elements_to_add:str = preset_to_load[3]
+    # split it first based on diffrerent elements
+    elements_to_add = elements_to_add.split("/|\\")
+    # create the actual list that will be sent
+    actual_elements_to_add = []
+    # iterate over the list of elements
+    for i in elements_to_add:
+        # split it to get the name, attr, and attr value
+        i = i.split("|")
+        # create a dictionary similiar to the original
+        d = {'name': i[0],
+             'attribute': i[1],
+             'attribute value': i[2],
+             'for site': preset_to_load[1]}
+        
+        actual_elements_to_add.append(d)
+
+    # add the parameters to the list (again the parameters have more complexity so a seperate function for them)
+    parameters_inverse_cleaned = inverse_of_web_parameter_formatting(preset_to_load[4], url=preset_to_load[1])
+    for i in parameters_inverse_cleaned:
+        payloads_list.append(i)
+    
+    display_final_button()
+
+#------------------------------------------------------------------------------------------
 # generic function that adds data to the lists. currently no function to remove
 def add_to_list(which_list):
     if which_list == 'url':
@@ -689,6 +760,7 @@ p_s_r_load_button = QPushButton(display_frame)
 p_s_r_load_button.setText("Load presets\nfrom database")
 p_s_r_load_button.move(370, 260)
 p_s_r_load_button.setFixedWidth(80)
+p_s_r_load_button.clicked.connect(lambda: loading_all_the_presets())
 
 p_s_r_load_list = QListWidget(display_frame)
 p_s_r_load_list.setGeometry(10, 260, 350, 200)
@@ -698,6 +770,7 @@ p_s_r_load_into_run_button = QPushButton(display_frame)
 p_s_r_load_into_run_button.setText("Load this\npreset")
 p_s_r_load_into_run_button.move(370, 300)
 p_s_r_load_into_run_button.setFixedWidth(80)
+p_s_r_load_into_run_button.clicked.connect(lambda: load_preset_into_fields())
 
 p_s_r_label.hide()
 p_s_r_create_label.hide()
