@@ -82,9 +82,10 @@
   -In here you are presented with 3 text boxes: one for the element name, one for the attribute to specify (OPTIONAL) and one for the attribute value (OPTIONAL).<br>
   -So if you want to scrape a div with class of text-box, in the HTML of the webpage it would look like: div class="text-box". Here, "div" is the element name, "class" is the element attribute, "text-box" is the attribute value.<br>
   -Once you have entered the element, you must then select the URL/site this element belongs to from the URLs you added in the previous step.<br>
-  -Finally click on the "+" button and its added. Note: if there are multiple elements with the same properties you specified, the script will scrape all their data. Note 2: it is possible you to only specify the element name, nothing else; this will scrape all the elements of that tag<br>
--Note: In order to obtain the necessary info about an element, you will have to inspect it. Just right click on the element, select 'Inspect' then you will be presented with the HTML of the element. Use the info in the HTML to scrape it<br>
--Note 2: If you have specified an a tag a.k.a a link tag to be scraped, it wont scrape the text it has, rather the link/href value of it. You can override this by going into 'requestExecutor.py' and finding the part where if says 'if x['name'] == 'a' then just comment out the else part, and the a tag's text will be scraped<br>
+  -Finally click on the "+" button and its added. Note: if there are multiple elements with the same properties you specified, the script will scrape all their data.<br> 
+-Note 2: it is possible you to only specify the element name, nothing else; this will scrape all the elements of that tag<br>
+-Note 3: In order to obtain the necessary info about an element, you will have to inspect it. Just right click on the element, select 'Inspect' then you will be presented with the HTML of the element. Use the info in the HTML to scrape it<br>
+-Note 4: If you have specified an a tag a.k.a a link tag to be scraped, it wont scrape the text it has, rather the link/href value of it. You can override this by going into 'requestExecutor.py' and finding the part where if says 'if x['name'] == 'a' then just comment out the else part, and the a tag's text will be scraped<br><br><br>
 
   <b>STEP 3: Specifying Request Parameters</b><br>
   -Add the web request parameters/payloads to send with your request.<br>
