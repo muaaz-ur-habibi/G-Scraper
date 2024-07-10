@@ -459,8 +459,11 @@ def get_elem_error_response(i):
             alert_payload.setText('Error')
             alert_payload.setInformativeText('A POST request is trying to be sent without any payloads. Please define a payload to be sent with the POST request')
             alert_payload.exec_()
-        elif isinstance(r, list):
-            print(f'The output has been recieved\n\n{r}')
+        else:
+            alert.setText("Scrape has started")
+            alert.setInformativeText("The scrape has started in a seperate thread. You can close this app if you wish, the results will be saved in the data folder")
+            alert.exec_()
+            display_set_site_controls()
     elif i.text() == '&No':
         display_set_elements_to_scrape()
 
@@ -487,10 +490,11 @@ def start_scrape():
         alert_payload.setText('Error')
         alert_payload.setInformativeText('No payloads were specified. If you wish to scrape without any web parameters, select the "No parameters" option for the site in payloads setting option')
         alert_payload.exec_()
-    
-    # for the verbose output
-    elif isinstance(r, list):
-        pass
+    else:
+        alert.setText("Scrape has started")
+        alert.setInformativeText("The scrape has started in a seperate thread. You can close this app if you wish, the results will be saved in the data folder")
+        alert.exec_()
+        display_set_site_controls()
 
 
     # handling the case where a post request is trying to be sent without any payloads/web parameters. What are they trying to POST?
