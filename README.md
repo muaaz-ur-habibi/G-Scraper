@@ -1,6 +1,7 @@
 <h1 align="center"><center>G-Scraper</center></h1>
 <h2 align="center"><center>A GUI based web scraper, written wholly in Python</center></h2>
 <hr>
+please read 
 <h3>What❓:</h3>
 <p>
   A GUI based web scraper written in Python. Useful for data collectors who want a nice UI for scraping data from many sites.
@@ -56,7 +57,7 @@
 <h3>Video Demo:</h3>
 <a href="https://www.youtube.com/watch?v=2wB75X7samI">Here</a>
 <hr>
-<h3>How to use:</h3>
+<h3 id="how-to-use">How to use:</h3>
 <p>
   <b>STEP 0: Install The App</b><br>
   -Clone this repository on your machine<br>
