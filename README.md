@@ -36,7 +36,7 @@
   <li>✅ Can scrape links</li>
   <li>✅ Unique way for generating unique filename for each log AND save data file so that no mixups happen</li>
 </ol>
-<b>G-Scraper CAN ONLY SCRAPE TEXTUAL DATA (texts, links etc.) NOT THINGS LIKE images, videos</b>
+<b align="center"><i>G-Scraper CAN ONLY SCRAPE TEXTUAL DATA (texts, links etc.) NOT THINGS LIKE images, videos</i></b>
 <hr>
 <h3>Libraries used to create this:</h3>
 <b>Main:</b>
