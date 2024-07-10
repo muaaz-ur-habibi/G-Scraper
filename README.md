@@ -73,7 +73,7 @@
   -Then just click on the "+" button and it is added.<br>
   -Note: URL should have format like 'https://someurl.com; simply click the URL bar at the top of the webpage, Ctrl+C, then Ctrl+V in the textbox.<br>
   -Note 2: add one URL at a time. Dont just enter the entire list into the text-box.<br>
-  -Note 3: As of now once you have added something you cannot remove it, you must reset the entire app's data.<br><br><br>
+  -Note 3: As of now once you have added something you cannot remove it, you must reset the entire app's data.<br><br>
   
   <b>STEP 2: Adding Elements (OPTIONAL)</b><br>
   -Add elements of that site to scrape.<br>
@@ -85,7 +85,7 @@
   -Finally click on the "+" button and its added. Note: if there are multiple elements with the same properties you specified, the script will scrape all their data.<br> 
 -Note 2: it is possible you to only specify the element name, nothing else; this will scrape all the elements of that tag<br>
 -Note 3: In order to obtain the necessary info about an element, you will have to inspect it. Just right click on the element, select 'Inspect' then you will be presented with the HTML of the element. Use the info in the HTML to scrape it<br>
--Note 4: If you have specified an a tag a.k.a a link tag to be scraped, it wont scrape the text it has, rather the link/href value of it. You can override this by going into 'requestExecutor.py' and finding the part where if says 'if x['name'] == 'a' then just comment out the else part, and the a tag's text will be scraped<br><br><br>
+-Note 4: If you have specified an a tag a.k.a a link tag to be scraped, it wont scrape the text it has, rather the link/href value of it. You can override this by going into 'requestExecutor.py' and finding the part where if says 'if x['name'] == 'a' then just comment out the else part, and the a tag's text will be scraped<br><br>
 
   <b>STEP 3: Specifying Request Parameters</b><br>
   -Add the web request parameters/payloads to send with your request.<br>
