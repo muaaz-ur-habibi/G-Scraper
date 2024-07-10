@@ -60,7 +60,11 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
 <h3 id="how-to-use">How to use:</h3>
 <p>
   <b>STEP 0: Install The App</b><br>
-  -Clone this repository on your machine<br>
+  -Clone this repository on your machine
+  
+  ```
+  git clone https://github.com/thegigacoder123/G-Scraper.git
+  ```
   -Run the command
   
   ```
