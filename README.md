@@ -1,7 +1,7 @@
 <h1 align="center"><center>G-Scraper</center></h1>
 <h2 align="center"><center>A GUI based web scraper, written wholly in Python</center></h2>
 <hr>
-please read 
+please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#how-to-use">How to Use</a> and <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#video-expl">watch the video</a> before messaging me with any concerns/issues 
 <h3>What❓:</h3>
 <p>
   A GUI based web scraper written in Python. Useful for data collectors who want a nice UI for scraping data from many sites.
@@ -54,7 +54,7 @@ please read
   <li>os (used to get current working directory) ⚡</li>
 </ul>
 <hr>
-<h3>Video Demo:</h3>
+<h3 id="video-expl">Video Demo:</h3>
 <a href="https://www.youtube.com/watch?v=2wB75X7samI">Here</a>
 <hr>
 <h3 id="how-to-use">How to use:</h3>
