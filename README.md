@@ -28,11 +28,11 @@
   <li>✅ Handles all types of errors</li>
   <li>✅ Request function runs in a seperate thread than GUI so you can do things while your request is being run</li>
   <li>✅ Functionality to edit the variables once they have been added</li>
-  <li>❌ All errors can be handled, logged and shown to the user</li>
+  <li>✅ All errors are handled and logged</li>
   <li>❌ Can delete an unwanted item from the list of added variables</li>
   <li>✅ Can reset the entire app to start brand new after a scrape/set of scrapes</li>
   <li>❌ Provides verbose output to user in the GUI</li>
-  <li>❌ User can set 'presets', basically if user does a scrape repetitively they can set a preset. User can then just load and run the preset without having to define the variables each time</li>
+  <li>✅ User can set 'presets', basically if user does a scrape repetitively they can set a preset. User can then just load and run the preset without having to define the variables each time</li>
   <li>❌ Can scrape images</li>
   <li>✅ Can scrape links</li>
   <li>✅ Unique way for generating unique filename for each log AND save data file so that no mixups happen</li>
