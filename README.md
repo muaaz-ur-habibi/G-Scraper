@@ -33,10 +33,10 @@
   <li>✅ Can reset the entire app to start brand new after a scrape/set of scrapes</li>
   <li>❌ Provides verbose output to user in the GUI</li>
   <li>✅ User can set 'presets', basically if user does a scrape repetitively they can set a preset. User can then just load and run the preset without having to define the variables each time</li>
-  <li>❌ Can scrape images</li>
   <li>✅ Can scrape links</li>
   <li>✅ Unique way for generating unique filename for each log AND save data file so that no mixups happen</li>
 </ol>
+<b>G-Scraper CAN ONLY SCRAPE TEXTUAL DATA (texts, links etc.) NOT THINGS LIKE images, videos</b>
 <hr>
 <h3>Libraries used to create this:</h3>
 <b>Main:</b>
