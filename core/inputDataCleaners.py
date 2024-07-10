@@ -1,7 +1,6 @@
 # this module basically converts all the input data to a much more easy-to-process format
 
 def clean_input_payloads_list(payload_list:list):
-    #print(payload_list)
     # Cleaning and prettifying the payload data
     grouped_data_element_payload = {}
 
@@ -46,8 +45,6 @@ def clean_input_payloads_list(payload_list:list):
     return url_param_list
 
 def clean_input_elements_list(element_list:list, url_list:list):
-    print(element_list)
-    #print(url_list)
     grouped_data_element = {}
 
     # Group the elements by URLs

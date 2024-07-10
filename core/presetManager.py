@@ -80,12 +80,6 @@ def create_preset(preset_name:str,
             elems = "/|\\".join(i for i in elems)
             cleaned_parameters_list = "///".join(i for i in cleaned_parameters_list)
 
-            #print(preset_name)
-            #print(url)
-            #print(req_type)
-            #print(elems)
-            #print(cleaned_parameters_list)
-
             c.execute(f"""INSERT INTO Presets VALUES ('{preset_name}', '{url}', '{req_type}', '{elems}', '{cleaned_parameters_list}')""")
 
             db.commit()
@@ -98,12 +92,6 @@ def create_preset(preset_name:str,
 
         # concatenate all the list items, so that it fits into one row
         cleaned_parameters_list = "///".join(i for i in cleaned_parameters_list)
-
-        #print(preset_name)
-        #print(url)
-        #print(req_type)
-        #print(elems)
-        #print(cleaned_parameters_list)
 
         c.execute(f"""INSERT INTO Presets VALUES ('{preset_name}', '{url}', '{req_type}', '{elems}', '{cleaned_parameters_list}')""")
 
@@ -135,15 +123,6 @@ def load_all_presets():
         c.execute("""SELECT * FROM Presets;""")
 
         return c.fetchall()
-
-def test():
-    cur_dir = os.getcwd().replace('\\core', '')
-
-    db = sqlite3.connect(f"{cur_dir}\\data\\presets\\presets.db")
-    c = db.cursor()
-
-    print(c.execute("""SELECT * FROM Presets""").fetchall())
-
 #test()
 #create_preset(preset_name='muaaz_k',
 #              url_list=[{'url': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/', 'request type': 'GET'}],

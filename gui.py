@@ -236,10 +236,18 @@ def load_preset_into_fields():
 
     # add the parameters to the list (again the parameters have more complexity so a seperate function for them)
     parameters_inverse_cleaned = inverse_of_web_parameter_formatting(preset_to_load[4], url=preset_to_load[1])
+
+    # add the elements and the parameters
     for i in parameters_inverse_cleaned:
         payloads_list.append(i)
+    for i in actual_elements_to_add:
+        elements_list.append(i)
     
     display_final_button()
+
+    alert.setText("Info")
+    alert.setInformativeText("All data has been set. Dont try to view it, because you probably wont be able to see it. Just press 'Yes' in the final step")
+    alert.exec_()
 
 #------------------------------------------------------------------------------------------
 # generic function that adds data to the lists. currently no function to remove
@@ -317,16 +325,21 @@ def add_to_list(which_list):
             w_r_p_add_param.clear()
             w_r_p_add_param_value.clear()
 
-            payl_data = {
-                'for site': for_site_p,
-                'type': payload_type,
-                'param': parameter,
-                'param value': parameter_value
-            }
+            if payload_type == 'no parameter' and parameter != '':
+                alert.setText("Error")
+                alert.setInformativeText("Type is 'No parameter' with parameters being passed?")
+                alert.exec_()
+            else:
+                payl_data = {
+                    'for site': for_site_p,
+                    'type': payload_type,
+                    'param': parameter,
+                    'param value': parameter_value
+                }
 
-            payloads_list.append(payl_data)
+                payloads_list.append(payl_data)
 
-            w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).upper()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
+                w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).upper()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
 
 
 
@@ -393,7 +406,6 @@ def edit_element_list_item():
 def edit_parameter_list_item():
     #try:
         selected_item_row = w_r_p_list.currentRow()
-        print(selected_item_row)
 
         value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected payload; seperate the key and value by using the | seperator like so: type|key|value|for_site. Even if you want to change only one thing, you must reenter the other as well.")
 
@@ -440,7 +452,6 @@ def delete_list_item(which_list:str):
 
 # get the response of the element error. if user wants to continue just run the script. else redirect user back to element adding section
 def get_elem_error_response(i):
-    print('elem error function')
     if i.text() == '&Yes':
         r = run(url_list=site_list, element_list=elements_list, payload_list=payloads_list, nullify_elem_error=True)
         # handling the case where a post request is trying to be sent without any payloads/web parameters. What are they trying to POST?
