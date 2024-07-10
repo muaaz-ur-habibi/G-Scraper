@@ -181,7 +181,6 @@ def loading_all_the_presets():
         alert.setInformativeText("Table in the database doesnt exist. Most likely means that no presets actually exist. Create a preset first")
         alert.exec_()
     else:
-        list_of_presets = []
         for i in c:
             name = i[0]
             site = i[1]
@@ -378,7 +377,6 @@ def edit_url_list_item():
 
 
 def edit_element_list_item():
-    #try:
         selected_item_row = e_t_s_list.currentRow()
         #selected_item = e_t_s_list.item(selected_item_row).text()
         value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected element; seperate name, attribute and attribute value by using colons like name:attribute:attribute value:for_site. Even if you wish to only edit one aspect, you must reenter all the other values")
@@ -397,14 +395,9 @@ def edit_element_list_item():
             alert.setText("Error")
             alert.setInformativeText("Please declare the ':' divider of the element name, attribute, attribute value and the site it belongs to")
             alert.exec_()
-    #except AttributeError:
-        #alert.setText("Error")
-        #alert.setInformativeText("Please select an item to edit")
-        #alert.exec_()
 
 
 def edit_parameter_list_item():
-    #try:
         selected_item_row = w_r_p_list.currentRow()
 
         value, _ = list_item_editor.getText(display_frame, "Edit List Item", "Edit the selected payload; seperate the key and value by using the | seperator like so: type|key|value|for_site. Even if you want to change only one thing, you must reenter the other as well.")
@@ -422,10 +415,7 @@ def edit_parameter_list_item():
             alert.setText("Error")
             alert.setInformativeText("Please declare the '|' divider of the parameter type, key, value and the site it goes with")
             alert.exec_()
-    #except AttributeError:
-        #alert.setText("Error")
-        #alert.setInformativeText("Please select an item to edit")
-        #alert.exec_()
+
 
 # function to delete the list items from any of the 3 lists
 def delete_list_item(which_list:str):
@@ -435,6 +425,8 @@ def delete_list_item(which_list:str):
         i = i.text()
         i = i.split("      ")
         i = {"url": i[0], "request type": i[1]}
+        e_t_s_for_site.removeItem(curr_i+1)
+        w_r_p_site.removeItem(curr_i+1)
         site_list.remove(i)
 
     # element one is truly confusing
