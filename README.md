@@ -109,7 +109,7 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
   <b>STEP 5: Setting Presets (OPTIONAL):</b><br>
   -You can also set presets, they are just what they sound like. You save some values, then in the future you can load those values without having to explicitly specify them<br>
   -Currently, you can only set a preset for one URL at a time, but the number of elements and web parameters for that URL is to your liking<br>
-  -To set a preset, just type in the values like normally as specified above. But now instead of starting the scrape, click on the 'Set/Run Presets' button in the menu bar.
+  -To set a preset, just type in the values like normally as specified above. But now instead of starting the scrape, click on the 'Set/Run Presets' button in the menu bar.<br>
   -Here you will be presented with an option to 'create a preset'.
   -Then to load that preset in the future,
   <ol>
@@ -118,7 +118,8 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
   </ol>
   -The data will be loaded, although if you try to view them from the lists, they won't show up.
   -Note: If you load a preset while some data is already in the app, the function will erase all that was there and just add the preset data
-  -Note 2: To run the preset, since all the values are loaded, just simply run the scrape like how you usually will<br><br>
+  -Note 2: To run the preset, since all the values are loaded, just simply run the scrape like how you usually will<br>
+  -Note 3: Preset names are case-sensitive, so muaazkhan, muaazKhan and Muaazkhan are all different<br><br>
 </p>
 <p>As of now, there really isnt a way to give verbose output to the user. So once you start the scrape, just wait for a few seconds and check the scraped data folder in the data folder. Alternatively, if you find nothing there, you can check the logs folder to see if any error had occured.</p>
 <h3>Updates:</h3>
