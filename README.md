@@ -1,6 +1,10 @@
 <h1 align="center"><center>G-Scraper</center></h1>
 <h2 align="center"><center>A GUI based web scraper, written wholly in Python</center></h2>
 <hr>
+please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#how-to-use">How to Use</a> and <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#video-expl">Watch the Video</a> before messaging me with any concerns/issues<br><br>
+<div style="border: 1px solid white;">
+<b>DISCLAIMER:</b> Some highly dynamic websites, like Youtube, use alot of Javascript to render their content. Since G-Scraper is built on Requests and Beautifulsoup4, these tools arent suitable for scraping sites like that. As such, you will encounter problems in scraping those sites.
+</div>
 <h3>What❓:</h3>
 <p>
   A GUI based web scraper written in Python. Useful for data collectors who want a nice UI for scraping data from many sites.
@@ -33,10 +37,10 @@
   <li>✅ Can reset the entire app to start brand new after a scrape/set of scrapes</li>
   <li>❌ Provides verbose output to user in the GUI</li>
   <li>✅ User can set 'presets', basically if user does a scrape repetitively they can set a preset. User can then just load and run the preset without having to define the variables each time</li>
-  <li>❌ Can scrape images</li>
   <li>✅ Can scrape links</li>
   <li>✅ Unique way for generating unique filename for each log AND save data file so that no mixups happen</li>
 </ol>
+<b align="center"><i>G-Scraper CAN ONLY SCRAPE TEXTUAL DATA (texts, links etc.) NOT THINGS LIKE images, videos</i></b>
 <hr>
 <h3>Libraries used to create this:</h3>
 <b>Main:</b>
@@ -53,13 +57,24 @@
   <li>os (used to get current working directory) ⚡</li>
 </ul>
 <hr>
-<h3>Video Demo:</h3>
+<h3 id="video-expl">Video Demo:</h3>
 <a href="https://www.youtube.com/watch?v=2wB75X7samI">Here</a>
 <hr>
-<h3>How to use:</h3>
+<h3 id="how-to-use">How to use:</h3>
 <p>
   <b>STEP 0: Install The App</b><br>
-  -Clone this repository on your machine<br>
+  -Clone this repository on your machine
+  
+  ```
+  git clone https://github.com/thegigacoder123/G-Scraper.git
+  ```
+  -Move into the directory G-Scraper<br>
+  -Run the command
+
+  ```
+  pip install -r requirements.txt
+  ```
+  to install the libraries<br>
   -Run the command
   
   ```
@@ -72,8 +87,7 @@
   -To do this select the "Set the Site to scrape" button and a enter in the URL of any number of websites you wish to scrape, along with its request method (THIS IS COMPULSORY).<br>
   -Then just click on the "+" button and it is added.<br>
   -Note: URL should have format like 'https://someurl.com; simply click the URL bar at the top of the webpage, Ctrl+C, then Ctrl+V in the textbox.<br>
-  -Note 2: add one URL at a time. Dont just enter the entire list into the text-box.<br>
-  -Note 3: As of now once you have added something you cannot remove it, you must reset the entire app's data.<br><br>
+  -Note 2: add one URL at a time. Dont just enter the entire list into the text-box.<br><br>
   
   <b>STEP 2: Adding Elements (OPTIONAL)</b><br>
   -Add elements of that site to scrape.<br>
@@ -101,6 +115,21 @@
   -Once you have everything set, you can start the scrape by clicking on "Start Scraping".<br>
   -Then once you have reviewed all the details, you can select "Yes".<br>
   -Note: If you havent specified any elements to scrape, app will give you a warning. If you forgot to, you can go back and specify them. Else you can just click on "Yes".<br><br>
+
+  <b>STEP 5: Setting Presets (OPTIONAL):</b><br>
+  -You can also set presets, they are just what they sound like. You save some values, then in the future you can load those values without having to explicitly specify them<br>
+  -Currently, you can only set a preset for one URL at a time, but the number of elements and web parameters for that URL is to your liking<br>
+  -To set a preset, just type in the values like normally as specified above. But now instead of starting the scrape, click on the 'Set/Run Presets' button in the menu bar.<br>
+  -Here you will be presented with an option to 'create a preset'.
+  -Then to load that preset in the future,
+  <ol>
+    <li>First load them from the database using the 'Load presets from database' button</li>
+    <li>Next select the preset you would like to run</li>
+  </ol>
+  -The data will be loaded, although if you try to view them from the lists, they won't show up.
+  -Note: If you load a preset while some data is already in the app, the function will erase all that was there and just add the preset data
+  -Note 2: To run the preset, since all the values are loaded, just simply run the scrape like how you usually will<br>
+  -Note 3: Preset names are case-sensitive, so muaazkhan, muaazKhan and Muaazkhan are all different<br><br>
 </p>
 <p>As of now, there really isnt a way to give verbose output to the user. So once you start the scrape, just wait for a few seconds and check the scraped data folder in the data folder. Alternatively, if you find nothing there, you can check the logs folder to see if any error had occured.</p>
 <h3>Updates:</h3>

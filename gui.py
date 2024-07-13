@@ -285,8 +285,8 @@ def add_to_list(which_list):
             s_a_p_list.addItem(f"{site_list[-1]['url']}      {site_list[-1]['request type']}")
             
             # append to other required lists
-            w_r_p_site.addItem(f'{site_list[-1]['url']}')
-            e_t_s_for_site.addItem(f'{site_list[-1]['url']}')
+            w_r_p_site.addItem(f"{site_list[-1]['url']}")
+            e_t_s_for_site.addItem(f"{site_list[-1]['url']}")
 
     elif which_list == 'element':
         # get the element values
