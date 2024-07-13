@@ -65,7 +65,7 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
   ```
   git clone https://github.com/thegigacoder123/G-Scraper.git
   ```
-  -Move into the directory G-Scraper
+  -Move into the directory G-Scraper<br>
   -Run the command
 
   ```
