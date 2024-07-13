@@ -46,7 +46,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
             # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
             if elems_list == []:
-                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-web_scraped.txt'
+                save_path = f"{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(' ', '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-web_scraped.txt"
 
                 # open the save file and assign it a unique name
                 with open(save_path, 'a', errors='ignore') as f_w:
@@ -61,7 +61,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
             else:
                 elems = elems_list['elements']
-                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt'
+                save_path = f"{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(' ', '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt"
 
                 # open the save file and assign it a unique name
                 with open(save_path, 'a', errors='ignore') as f_a:
@@ -90,7 +90,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'No links found in {url}', request_type=req_type)
                             else:
                                 for i in links_scraped:
-                                    f_a.write(f'{str(i.get('href'))}\n')
+                                    f_a.write(f"{str(i.get('href'))}\n")
                                     elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
                 # if the logs of elements isnt empty, log an element log. else just do nothing
                 if elems_logging_list != []:
@@ -124,7 +124,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
             # check if there are any specific elements to be scraped, else just upload the entire webpage to a file
             if elems_list == []:
 
-                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-web_scraped.txt'
+                save_path = f"{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(' ', '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-web_scraped.txt"
 
                 with open(save_path, 'a', errors='ignore') as f_w:
                     f_w.write(scraped_page)
@@ -139,7 +139,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 
             else:
                 elems = elems_list['elements']
-                save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt'
+                save_path = f"{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(' ', '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt"
 
                 # open the save file and assign it a unique name
                 with open(save_path, 'a', errors='ignore') as f_a:
@@ -168,7 +168,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'No links found in {url}', request_type=req_type)
                             else:
                                 for i in links_scraped:
-                                    f_a.write(f'{str(i.get('href'))}\n')
+                                    f_a.write(f"{str(i.get('href'))}\n")
                                     elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
 
                 
@@ -207,7 +207,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
         # check if there are any elements to be scraped
         if elems_list == []:
-            save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-web_scraped.txt'
+            save_path = f"{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(' ', '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-web_scraped.txt"
 
             with open(save_path, 'a', errors='ignore') as f_w:
                 f_w.write(scraped_page)
@@ -223,7 +223,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
         else:
             elems = elems_list['elements']
-            save_path = f'{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(" ", '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt'
+            save_path = f"{curr_dir}\\data\\scraped-data\\{str(datetime.datetime.now()).split('.')[0].replace(' ', '_').replace(':', '-')}--{str(url).replace('/', '=').replace('.', '-').replace(':', '').replace('?', 'SEARCH_QUERY')}-elements_scraped.txt"
 
             # open the save file and assign it a unique name
             with open(save_path, 'a', errors='ignore') as f_a:
@@ -252,7 +252,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                                 error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='NOT FOUND', error=f'No links found in {url}', request_type=req_type)
                             else:
                                 for i in links_scraped:
-                                    f_a.write(f'{str(i.get('href'))}\n')
+                                    f_a.write(f"{str(i.get('href'))}\n")
                                     elems_logging_list.append(f"[{req_type}] [{code}] [Start Time: {start_time}  End Time: {str(datetime.datetime.now())}]  url={url}  link={i.get('href')}  parameters={params_list}\n")
                 # if the logs of elements isnt empty, log an element log. else just do nothing
                 if elems_logging_list != []:
