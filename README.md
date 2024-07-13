@@ -71,7 +71,7 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
   ```
   pip install -r requirements.txt
   ```
-  to install the libraries
+  to install the libraries<br>
   -Run the command
   
   ```
