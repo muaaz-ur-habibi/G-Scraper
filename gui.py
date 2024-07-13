@@ -6,7 +6,7 @@ from PyQt5.QtCore import *
 from core.runner import run
 
 # import the preset functions
-from core.presetManager import create_preset, load_preset, load_all_presets, inverse_of_web_parameter_formatting
+from core.presetManager import create_preset, load_preset, load_all_presets, inverse_of_web_parameter_formatting, delete_presets
 
 
 # functions that show/hide certain widgets based on menu option user pressed
@@ -47,6 +47,7 @@ def hide_all_widgets():
     p_s_r_create_button.hide()
     p_s_r_load_label.hide()
     p_s_r_load_button.hide()
+    p_s_r_delete_preset_button.hide()
     p_s_r_load_list.hide()
     p_s_r_load_into_run_button.hide()
 
@@ -106,6 +107,7 @@ def display_presets_controls():
     p_s_r_load_label.show()
     p_s_r_load_button.show()
     p_s_r_load_list.show()
+    p_s_r_delete_preset_button.show()
     p_s_r_load_into_run_button.show()
 
 def display_final_button():
@@ -174,6 +176,7 @@ def create_preset_():
 # this function first checks if a table is present, if it isnt it asks the user to create one (by creating a preset) 
 # if there is one, it then gets all the necessary data and adds it to the list
 def loading_all_the_presets():
+    p_s_r_load_list.clear()
     c = load_all_presets()
 
     if c == "Table doesnt exist":
@@ -248,6 +251,13 @@ def load_preset_into_fields():
     alert.setInformativeText("All data has been set. Dont try to view it, because you probably wont be able to see it. Just press 'Yes' in the final step")
     alert.exec_()
 
+def delete_preset():
+    preset = p_s_r_load_list.currentItem().text()
+    preset_index = p_s_r_load_list.currentRow()
+    preset = preset.split(": ")[0]
+    
+    delete_presets(preset_name=preset)
+    p_s_r_load_list.takeItem(preset_index)
 #------------------------------------------------------------------------------------------
 # generic function that adds data to the lists. currently no function to remove
 def add_to_list(which_list):
@@ -779,11 +789,19 @@ p_s_r_load_into_run_button.move(370, 300)
 p_s_r_load_into_run_button.setFixedWidth(80)
 p_s_r_load_into_run_button.clicked.connect(lambda: load_preset_into_fields())
 
+# this button deletes the presets that the user wants
+p_s_r_delete_preset_button = QPushButton(display_frame)
+p_s_r_delete_preset_button.setText("Delete this\npreset")
+p_s_r_delete_preset_button.move(370, 340)
+p_s_r_delete_preset_button.setFixedWidth(80)
+p_s_r_delete_preset_button.clicked.connect(lambda: delete_preset())
+
 p_s_r_label.hide()
 p_s_r_create_label.hide()
 p_s_r_create_button.hide()
 p_s_r_load_label.hide()
 p_s_r_load_button.hide()
+p_s_r_delete_preset_button.hide()
 p_s_r_load_list.hide()
 p_s_r_load_into_run_button.hide()
 

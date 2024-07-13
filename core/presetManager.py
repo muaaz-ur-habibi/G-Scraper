@@ -123,8 +123,15 @@ def load_all_presets():
         c.execute("""SELECT * FROM Presets;""")
 
         return c.fetchall()
-#test()
-#create_preset(preset_name='muaaz_k',
-#              url_list=[{'url': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/', 'request type': 'GET'}],
-#              elements=[{'name': 'code', 'attribute': 'class', 'attribute value': 'codeBlockLines_e6Vv', 'for site': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/'}, {'name': 'h3', 'attribute': 'class', 'attribute value': 'anchor anchorWithStickyNavbar_LWe7', 'for site': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/'}],
-#              payloads=[{'for site': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/', 'type': 'headers', 'param': 'Referer', 'param value': 'https://github.com/langchain-ai/langchain\n'}, {'for site': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/', 'type': 'headers', 'param': 'User-Agent', 'param value': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'}, {'for site': 'https://python.langchain.com/v0.2/docs/tutorials/chatbot/', 'type': 'headers', 'param': 'Cookie', 'param value': '_ga=GA1.1.1743566515.1720166178; _ga_9B66JQQH2F=GS1.1.1720178018.3.0.1720178018.0.0.0'}])
+    
+
+def delete_presets(preset_name:str):
+    cur_dir = os.getcwd().replace('\\core', '')
+
+    db = sqlite3.connect(f"{cur_dir}\\data\\presets\\presets.db")
+    c = db.cursor()
+
+    c.execute(f"""DELETE FROM Presets WHERE preset_name = '{preset_name}'""")
+
+    db.commit()
+    db.close()
