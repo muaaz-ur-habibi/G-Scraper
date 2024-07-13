@@ -1,8 +1,10 @@
 <h1 align="center"><center>G-Scraper</center></h1>
 <h2 align="center"><center>A GUI based web scraper, written wholly in Python</center></h2>
 <hr>
-please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#how-to-use">How to Use</a> and <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#video-expl">watch the video</a> before messaging me with any concerns/issues<br><br>
+please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#how-to-use">How to Use</a> and <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/README.md#video-expl">Watch the Video</a> before messaging me with any concerns/issues<br><br>
+<div style="border: 1px solid white;">
 <b>DISCLAIMER:</b> Some highly dynamic websites, like Youtube, use alot of Javascript to render their content. Since G-Scraper is built on Requests and Beautifulsoup4, these tools arent suitable for scraping sites like that. As such, you will encounter problems in scraping those sites.
+</div>
 <h3>What❓:</h3>
 <p>
   A GUI based web scraper written in Python. Useful for data collectors who want a nice UI for scraping data from many sites.
