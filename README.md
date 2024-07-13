@@ -153,3 +153,12 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
   <li>Completed the basic presetting functionality, i.e being able to take, clean and process all the necessary data</li>
   <li>Also added some ifs and elses so that presetting now also can support webpage scraping</li>
 </ul>
+<h2>10 July, 2024</h2>
+<ul>
+  <li>Completed the presetting functionality, with the exception of deleting a preset</li>
+  <li>Added a pop-up when scrape started to let user know</li>
+</ul>
+<h2>July 13, 2024</h2>
+<ul>
+  <li>Added the functionality to delete a preset</li>
+</ul>
