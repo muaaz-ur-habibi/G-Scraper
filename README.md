@@ -66,7 +66,7 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
   -Clone this repository on your machine
   
   ```
-  git clone https://github.com/thegigacoder123/G-Scraper.git
+  git clone https://github.com/muaaz-ur-habibi/G-Scraper.git
   ```
   -Move into the directory G-Scraper<br>
   -Run the command
