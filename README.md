@@ -23,9 +23,8 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
 <h4>Presetting menu</h4>
 <img src="https://github.com/user-attachments/assets/ff6b965e-90d8-411e-a1b9-7aa2af32e37c">
 <h4>Final menu</h4>
-<img src="https://github.com/user-attachments/assets/4f373176-41af-4416-becd-de1ea31a95f2">
+<img src="https://github.com/user-attachments/assets/52a27a83-b71f-4c13-94bf-10133ced36f0">
 <hr>
-
 <h3>Features ✨:</h3>(✅ means that it is implemented. ❌ means that i am working on it.)
 <br>
 <ol>
