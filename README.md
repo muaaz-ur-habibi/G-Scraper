@@ -15,7 +15,7 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
 <hr>
 <h3>Screenshots📷</h3>
 <h4>URL adding menu</h4>
-<img src="https://github.com/user-attachments/assets/81e60a81-a700-4e8e-8adf-d665ed8970a2">
+<img src="https://github.com/user-attachments/assets/2093ac6a-7997-4624-a6b7-1f5172fee47f">
 <h4>Elements adding menu</h4>
 <img src="https://github.com/user-attachments/assets/ff6b965e-90d8-411e-a1b9-7aa2af32e37c">
 <h4>Web parameters adding menu</h4>
@@ -25,6 +25,7 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
 <h4>Final menu</h4>
 <img src="https://github.com/user-attachments/assets/4f373176-41af-4416-becd-de1ea31a95f2">
 <hr>
+
 <h3>Features ✨:</h3>(✅ means that it is implemented. ❌ means that i am working on it.)
 <br>
 <ol>
