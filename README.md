@@ -13,6 +13,18 @@ please read <a href="https://github.com/thegigacoder123/G-Scraper/blob/main/READ
 <h3>Why❓:</h3>
 <p>I was looking through Reddit for fun project ideas and came across a thread in which there was a comment of someone complaining about there not being a GUI Web Scraper. Thus I started working on G-Scraper.</p>
 <hr>
+<h3>Screenshots📷</h3>
+<h4>URL adding menu</h4>
+<img src="https://github.com/user-attachments/assets/2093ac6a-7997-4624-a6b7-1f5172fee47f">
+<h4>Elements adding menu</h4>
+<img src="https://github.com/user-attachments/assets/3875da80-ad61-41ae-acc9-994fc4cf9fe9">
+<h4>Web parameters adding menu</h4>
+<img src="https://github.com/user-attachments/assets/7c99d021-6027-4804-87a6-3dd58eaff6b5">
+<h4>Presetting menu</h4>
+<img src="https://github.com/user-attachments/assets/ff6b965e-90d8-411e-a1b9-7aa2af32e37c">
+<h4>Final menu</h4>
+<img src="https://github.com/user-attachments/assets/52a27a83-b71f-4c13-94bf-10133ced36f0">
+<hr>
 <h3>Features ✨:</h3>(✅ means that it is implemented. ❌ means that i am working on it.)
 <br>
 <ol>
