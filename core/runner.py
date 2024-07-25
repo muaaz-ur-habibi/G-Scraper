@@ -2,10 +2,10 @@
 import threading
 
 # import the request executor function
-from .requestExecutor import request_executor
+from .request_executor import request_executor
 
 # import the input data cleaning functions
-from .inputDataCleaners import clean_input_elements_list, clean_input_payloads_list
+from .input_data_cleaners import clean_input_elements_list, clean_input_payloads_list
 
 
 # A custom thread class that incorporates returning a value since the original one doesnt (currently not using the return so :\ )

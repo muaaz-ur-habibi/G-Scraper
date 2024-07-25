@@ -6,7 +6,7 @@ from PyQt5.QtCore import *
 from core.runner import run
 
 # import the preset functions
-from core.presetManager import create_preset, load_preset, load_all_presets, inverse_of_web_parameter_formatting, delete_presets
+from core.preset_manager import create_preset, load_preset, load_all_presets, inverse_of_web_parameter_formatting, delete_presets
 
 
 # functions that show/hide certain widgets based on menu option user pressed
@@ -50,6 +50,14 @@ def hide_all_widgets():
     p_s_r_delete_preset_button.hide()
     p_s_r_load_list.hide()
     p_s_r_load_into_run_button.hide()
+
+    s_p_a_title.hide()
+    s_p_a_adding_box_label.hide()
+    s_p_a_adding_box.hide()
+    s_p_a_url_label.hide()
+    s_p_a_url_selection.hide()
+    s_p_a_adding_button.hide()
+    s_p_a_list.hide()
 
     ask.hide()
     show_site_list_l.hide()
@@ -109,6 +117,17 @@ def display_presets_controls():
     p_s_r_load_list.show()
     p_s_r_delete_preset_button.show()
     p_s_r_load_into_run_button.show()
+
+def display_proxy_controls():
+    hide_all_widgets()
+
+    s_p_a_title.show()
+    s_p_a_adding_box_label.show()
+    s_p_a_adding_box.show()
+    s_p_a_url_label.show()
+    s_p_a_url_selection.show()
+    s_p_a_adding_button.show()
+    s_p_a_list.show()
 
 def display_final_button():
     hide_all_widgets()
@@ -287,6 +306,7 @@ def add_to_list(which_list):
             # append to other required lists
             w_r_p_site.addItem(f"{site_list[-1]['url']}")
             e_t_s_for_site.addItem(f"{site_list[-1]['url']}")
+            s_p_a_url_selection.addItem(f"{site_list[-1]['url']}")
 
     elif which_list == 'element':
         # get the element values
@@ -349,8 +369,32 @@ def add_to_list(which_list):
                 payloads_list.append(payl_data)
 
                 w_r_p_list.addItem(f"{str(payloads_list[-1]['type']).upper()}: {payloads_list[-1]['param']}->{payloads_list[-1]['param value']} FOR {payloads_list[-1]['for site']}")
+    
+    elif which_list == 'proxies':
+        # get the proxy and the url to which it should belong to
+        proxy = s_p_a_adding_box.text()
+        proxy_url = s_p_a_url_selection.currentText()
+        
+        # not store empty data
+        if proxy.strip() == '':
+            alert.setText('Error')
+            alert.setInformativeText("Please specify a proxy")
+            alert.exec_()
+        elif proxy_url == 'Select a site':
+            alert.setText('Error')
+            alert.setInformativeText("Please specify a URL this proxy belongs to")
+            alert.exec_()
+        # after all checks are passed, store the data in both visual and backend lists
+        else:
+            proxy_data = {
+                'for site': proxy_url,
+                'proxy': proxy
+            }
 
+            proxies_list.append(proxy_data)
 
+            s_p_a_list.addItem(f"{proxy} FOR {proxy_url}")
+            pass
 
 # functions to edit the added list of items, example you want to change a request type of a URL, change an attribute of an element etc
 def edit_url_list_item():
@@ -511,6 +555,7 @@ def start_scrape():
 site_list = []
 elements_list = []
 payloads_list = []
+proxies_list = []
 
 
 app = QApplication([])
@@ -558,17 +603,23 @@ preset_manager_show_button.move(10, 220)
 preset_manager_show_button.setText("Set/Run Presets")
 preset_manager_show_button.clicked.connect(lambda: display_presets_controls())
 
+proxy_setting_show_button = QPushButton(control_frame)
+proxy_setting_show_button.setFixedSize(170, 50)
+proxy_setting_show_button.move(10, 280)
+proxy_setting_show_button.setText("Set Proxies")
+proxy_setting_show_button.clicked.connect(lambda: display_proxy_controls())
+
 # final display and confirm the user wants to start scrape
 final_send_button = QPushButton(control_frame)
 final_send_button.setFixedSize(170, 50)
-final_send_button.move(10, 280)
+final_send_button.move(10, 340)
 final_send_button.setText("Start Scraping")
 final_send_button.clicked.connect(lambda: display_final_button())
 
 # A button to reset the app's data
 reset_app_data = QPushButton(control_frame)
 reset_app_data.setText("Reset App Data")
-reset_app_data.move(10, 340)
+reset_app_data.move(10, 400)
 reset_app_data.setFixedSize(170, 50)
 reset_app_data.clicked.connect(lambda: reset_app())
 
@@ -804,6 +855,51 @@ p_s_r_load_button.hide()
 p_s_r_delete_preset_button.hide()
 p_s_r_load_list.hide()
 p_s_r_load_into_run_button.hide()
+
+#---------------------------------------------------
+# widgets for proxies adding
+s_p_a_title = QLabel(display_frame)
+s_p_a_title.move(10, 30)
+s_p_a_title.setFont(QFont("Segoe UI", 13))
+s_p_a_title.setText("Add Proxies")
+
+s_p_a_adding_box_label = QLabel(display_frame)
+s_p_a_adding_box_label.setText("Add a proxy")
+s_p_a_adding_box_label.setFont(QFont('Segoe UI', 10))
+s_p_a_adding_box_label.move(10, 80)
+
+s_p_a_adding_box = QLineEdit(display_frame)
+s_p_a_adding_box.move(90, 80)
+s_p_a_adding_box.setFixedWidth(300)
+
+s_p_a_url_label = QLabel(display_frame)
+s_p_a_url_label.setText("Select the URL this proxy belongs to:")
+s_p_a_url_label.move(10, 110)
+s_p_a_url_label.setFont(QFont("Segoe UI", 10))
+
+s_p_a_url_selection = QComboBox(display_frame)
+s_p_a_url_selection.setFixedSize(270, 20)
+s_p_a_url_selection.setFont(QFont('Segoe UI', 8))
+s_p_a_url_selection.addItem("Select a site")
+s_p_a_url_selection.move(10, 130)
+
+s_p_a_adding_button = QPushButton(display_frame)
+s_p_a_adding_button.setText("+")
+s_p_a_adding_button.setFixedWidth(70)
+s_p_a_adding_button.move(290, 129)
+s_p_a_adding_button.clicked.connect(lambda: add_to_list('proxies'))
+
+s_p_a_list = QListWidget(display_frame)
+s_p_a_list.setGeometry(10, 160, 350, 290)
+
+
+s_p_a_title.hide()
+s_p_a_adding_box_label.hide()
+s_p_a_adding_box.hide()
+s_p_a_url_label.hide()
+s_p_a_url_selection.hide()
+s_p_a_adding_button.hide()
+s_p_a_list.hide()
 
 #---------------------------------------------------
 # wigdets to confirm to start scrape after showing the scrape data

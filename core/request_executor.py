@@ -34,8 +34,6 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
             except HTTPError:
                 error_logger(url=url, time=f"Start Time: {start_time}   End Time: {str(datetime.datetime.now())}", status='ERROR', error='Site not found Error', request_type=req_type)
-                # return the output for a user on the GUI f"Start Time: {start_time} End Time: {str(datetime.datetime.now())}"
-                #return [str(datetime.datetime.now()), url, 'ERROR', v_o_params_list, 'Connection Error', 'GET', '-', 'error scrape']
 
             # scrape and prettify the page with bs4
             page_soup = bs(req, features='html.parser')
@@ -52,12 +50,6 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 with open(save_path, 'a', errors='ignore') as f_w:
                     f_w.write(scraped_page)
                     webpage_logger(time=f"Start Time: {start_time}  End Time: {str(datetime.datetime.now())}", url=url, status=code, parameters=params_list, request_type=req_type)
-
-                    #finish_time = datetime.datetime.now()
-                    #diff = finish_time - start_time
-
-                    # return the output for a user on the GUI
-                    #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
 
             else:
                 elems = elems_list['elements']
@@ -97,9 +89,6 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
                     pass
-
-                            # return the output for a user on the GUI
-                            #return [diff.total_seconds(),  url, f"{x['name']}:::{x['attribute']}:::{x['attribute value']}", v_o_params_list, 'no errors', 'GET', code, 'elemental scrape']
 
         # Similiar working as above, just without any request parameters
         else:
@@ -129,13 +118,6 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                 with open(save_path, 'a', errors='ignore') as f_w:
                     f_w.write(scraped_page)
                     webpage_logger(time=f"Start Time: {start_time}  End Time: {str(datetime.datetime.now())}", url=url, status=code, parameters=params_list, request_type=req_type)
-
-                    # Calculating the time taken to process the request
-                    #finish_time = datetime.datetime.now()
-                    #diff = finish_time - start_time
-
-                    # return the output for a user on the GUI
-                    #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'GET', code, 'pagical scrape']
                 
             else:
                 elems = elems_list['elements']
@@ -177,9 +159,6 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
                     pass
-
-                            # return the output for a user on the GUI
-                            #return [diff.total_seconds(),  url, f"{x['name']}:::{x['attribute']}:::{x['attribute value']}", v_o_params_list, 'no errors', 'GET', code, 'elemental scrape']
                         
     # handle POST requests
     elif req_type == 'POST':
@@ -211,15 +190,7 @@ def request_executor(url, params_list:dict, elems_list, req_type):
 
             with open(save_path, 'a', errors='ignore') as f_w:
                 f_w.write(scraped_page)
-                # calculating time taken for scrape to 
-                #finish_time = datetime.datetime.now()
-                #diff = finish_time - start_time
                 webpage_logger(time=f"Start Time: {start_time}  End Time: {str(datetime.datetime.now())}", url=url, status=code, parameters=params_list, request_type=req_type)
-
-                
-
-                # return the output for a user on the GUI
-                #return [diff.total_seconds(),  url, 'WEBPAGE', v_o_params_list, 'no errors', 'POST', code, 'pagical scrape']
 
         else:
             elems = elems_list['elements']
@@ -259,10 +230,3 @@ def request_executor(url, params_list:dict, elems_list, req_type):
                     element_logger(elements_logs_list=elems_logging_list)
                 else:
                     pass
-
-                        #finish_time = datetime.datetime.now()
-                        #diff = finish_time - start_time
-                        
-                        # return the output for a user on the GUI
-                        #return [diff.total_seconds(),  url, f"{x['name']}:::{x['attribute']}:::{x['attribute value']}", v_o_params_list, 'no errors', 'POST', code, 'elemental scrape']
-
